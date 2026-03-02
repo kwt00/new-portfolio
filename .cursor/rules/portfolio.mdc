@@ -1,0 +1,64 @@
+---
+description: Portfolio project design system, architecture, and coding conventions
+globs: **/*.{tsx,ts,css}
+---
+
+# Portfolio Project Rules
+
+## Project Overview
+A grotesque-modern editorial portfolio for Kevin Taylor. Sharp geometry, warm beige palette, pale-bright accent colors, restrained but rewarding interactivity. Built with React + TypeScript + Tailwind CSS v4 + ReactBits-style components.
+
+## Design System
+
+### Colors (defined as @theme tokens in src/index.css)
+- Background: `#f2ece4` (warm beige), surfaces `#ebe4db`
+- Text: `#2a2520` (warm near-black), muted `#8a7f72`
+- Border: `#d4cabf`
+- **Accent palette** (pale but saturated):
+  - Pink `#e85d75` → Section 01 (About), primary CTA
+  - Blue `#5b8cf5` → Section 02 (Work)
+  - Violet `#9b72f2` → Section 03 (Skills), ASCII art
+  - Teal `#4ecdc4` → availability status, stats
+  - Orange `#f2994a` → Section 04 (Contact)
+- Reference colors via `var(--color-*)` in both classes and inline styles
+
+### Typography
+- Display/Body: Space Grotesk (300–700)
+- Mono/Labels: Space Mono (400, 700)
+- All labels/tags: `11px`, mono, uppercase, wide tracking (`0.15em`–`0.3em`)
+- Headings: tight negative tracking (`-0.02em` to `-0.03em`), line-height ~1.1
+
+### Visual Rules
+- **ZERO border-radius** on everything — cards, buttons, inputs, images, badges, social icons
+- Card grids use 1px grid-line pattern: parent `gap-px bg-[var(--color-border)]`, children `bg-[var(--color-surface)]`
+- Custom cursor (hidden native, custom dot + ring) — desktop only
+- `cursor: none` on body, a, button
+
+## Architecture
+
+### Component Structure
+- `src/components/reactbits/` — All ReactBits-style animated components (copy-paste, not from npm)
+- `src/components/` — Navbar, Footer
+- `src/sections/` — Hero, About, Projects, Skills, Contact
+- `src/App.tsx` — Main layout composing all sections
+
+### ReactBits Components Available
+Aurora, ASCIIText, SplitText, RotatingText, BlurText, DecryptedText, GradientText, ShinyText, CountUp, AnimatedContent, SpotlightCard, TiltedCard, Squares, Magnet, ClickSpark, CustomCursor, StarBorder
+
+### Tailwind v4
+- Configured via `@tailwindcss/vite` plugin — no `tailwind.config` file
+- All tokens in `@theme {}` block in `src/index.css`
+- **Do NOT add a global `* { margin: 0; padding: 0; }` reset** — it overrides all Tailwind spacing utilities due to CSS layer specificity
+
+## Coding Conventions
+- Functional React components with TypeScript interfaces for props
+- Intersection Observer for scroll-triggered animations (not scroll event listeners)
+- `requestAnimationFrame` for canvas/cursor animations
+- Inline styles only for dynamic values (mouse position, computed colors); Tailwind for everything else
+- All interactive elements get `data-cursor-hover` attribute for cursor expansion
+
+## Animation Guidelines
+- Scroll reveals: 30px travel distance, `cubic-bezier(0.16, 1, 0.3, 1)` easing, staggered delays
+- Hovers: color transitions (300ms), no scale except project images (1.03, 700ms)
+- Tilt: 5° max, project cards only
+- Keep it restrained — if it moves without user interaction, it should be barely perceptible
