@@ -8,8 +8,14 @@ const COLORS = [
   "var(--color-orange)",
 ];
 
-const COLS = 40;
 const ROWS = 4;
+
+function getColumns(): number {
+  if (typeof window === "undefined") return 40;
+  if (window.innerWidth < 480) return 12;
+  if (window.innerWidth < 768) return 20;
+  return 40;
+}
 
 interface CellState {
   filled: boolean;
@@ -24,8 +30,9 @@ interface CellState {
  */
 const ScrollMosaic = ({ className = "" }: { className?: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [cols, setCols] = useState(getColumns);
   const [cells, setCells] = useState<CellState[]>(() =>
-    Array.from({ length: COLS * ROWS }, () => ({
+    Array.from({ length: getColumns() * ROWS }, () => ({
       filled: false,
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
       hovered: false,
@@ -34,6 +41,27 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
   const revealProgress = useRef(0);
   const mouseCol = useRef(-1);
   const mouseRow = useRef(-1);
+  const colsRef = useRef(cols);
+
+  // Respond to window resize — rebuild cells if col count changes
+  useEffect(() => {
+    const handleResize = () => {
+      const newCols = getColumns();
+      if (newCols !== colsRef.current) {
+        colsRef.current = newCols;
+        setCols(newCols);
+        setCells(
+          Array.from({ length: newCols * ROWS }, () => ({
+            filled: false,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            hovered: false,
+          }))
+        );
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Scroll-driven fill: as the component scrolls into view, cells fill left→right
   useEffect(() => {
@@ -56,6 +84,7 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
     const updateCells = () => {
       const rect = container.getBoundingClientRect();
       const viewH = window.innerHeight;
+      const currentCols = colsRef.current;
       // Progress: 0 when bottom of element is at viewport bottom, 1 when top is past center
       const progress = Math.max(
         0,
@@ -64,10 +93,10 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
 
       setCells((prev) =>
         prev.map((cell, i) => {
-          const col = i % COLS;
-          const row = Math.floor(i / COLS);
+          const col = i % currentCols;
+          const row = Math.floor(i / currentCols);
           // Staggered reveal — wave from left to right, offset by row
-          const threshold = (col + row * 2) / (COLS + ROWS * 2);
+          const threshold = (col + row * 2) / (currentCols + ROWS * 2);
           const filled = progress > threshold;
           // Mouse hover — light up cells near cursor
           const hovered =
@@ -92,7 +121,7 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
       observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [cols]);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -100,7 +129,7 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
       if (!rect) return;
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const cellW = rect.width / COLS;
+      const cellW = rect.width / colsRef.current;
       const cellH = rect.height / ROWS;
       mouseCol.current = Math.floor(x / cellW);
       mouseRow.current = Math.floor(y / cellH);
@@ -116,14 +145,14 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
   return (
     <div
       ref={containerRef}
-      className={`w-full max-w-6xl mx-auto px-8 md:px-12 ${className}`}
+      className={`w-full max-w-6xl mx-auto px-4 sm:px-8 md:px-12 ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <div
-        className="grid border-[4px] border-[var(--color-text)]"
+        className="grid border-[3px] sm:border-[4px] border-[var(--color-text)]"
         style={{
-          gridTemplateColumns: `repeat(${COLS}, 1fr)`,
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
           gridTemplateRows: `repeat(${ROWS}, 1fr)`,
         }}
       >

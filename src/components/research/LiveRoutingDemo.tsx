@@ -239,10 +239,10 @@ const LiveRoutingDemo = () => {
 
   return (
     <div className="w-full">
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {/* Left: typewriter display */}
         <div className="flex flex-col">
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
             {DOMAIN_BUTTONS.map(({ label, domain, color }) => {
               const isActive = activeDomain === domain;
               return (
@@ -270,8 +270,8 @@ const LiveRoutingDemo = () => {
 
           {/* Typewriter text area */}
           <div
-            className="w-full h-48 p-4 text-[13px] font-mono bg-[var(--color-surface)] border-[4px] border-[var(--color-text)] text-[var(--color-text)] overflow-auto"
-            style={{ boxShadow: "5px 5px 0px var(--color-text)" }}
+            className="w-full h-36 sm:h-48 p-3 sm:p-4 text-[12px] sm:text-[13px] font-mono bg-[var(--color-surface)] border-[3px] sm:border-[4px] border-[var(--color-text)] text-[var(--color-text)] overflow-auto"
+            style={{ boxShadow: "3px 3px 0px var(--color-text)" }}
           >
             {displayedText ? (
               <span>
@@ -342,11 +342,11 @@ const LiveRoutingDemo = () => {
             </div>
 
             <div
-              className="grid flex-1 border-[3px] border-[var(--color-text)]"
+              className="grid flex-1 border-[2px] sm:border-[3px] border-[var(--color-text)]"
               style={{
                 gridTemplateColumns: `repeat(${HEADS}, 1fr)`,
                 gridTemplateRows: `repeat(${LAYERS}, 1fr)`,
-                boxShadow: "4px 4px 0px var(--color-text)",
+                boxShadow: "3px 3px 0px var(--color-text)",
               }}
             >
               {heatmap.map((value, i) => {

@@ -10,26 +10,24 @@ const row1 = [
   { text: "PYTHON", color: "var(--color-teal)" },
   { text: "AI / ML", color: "var(--color-pink)" },
   { text: "NEXT.JS", color: "var(--color-orange)" },
-  { text: "DEVREL", color: "var(--color-blue)" },
+  { text: "PYTORCH", color: "var(--color-blue)" },
   { text: "NODE.JS", color: "var(--color-violet)" },
   { text: "INFERENCE", color: "var(--color-teal)" },
   { text: "LLMs", color: "var(--color-pink)" },
-  { text: "MIDWAY", color: "var(--color-blue)" },
-  { text: "HACKATHONS", color: "var(--color-orange)" },
+  { text: "TRANSFORMERS", color: "var(--color-orange)" },
 ];
 
 const row2 = [
-  { text: "GROWTH", color: "var(--color-orange)" },
+  { text: "GROWTH ENG", color: "var(--color-orange)" },
   { text: "CEREBRAS", color: "var(--color-pink)" },
-  { text: "PYTORCH", color: "var(--color-blue)" },
   { text: "CLI TOOLS", color: "var(--color-teal)" },
-  { text: "COMMUNITY", color: "var(--color-violet)" },
   { text: "WEBGL", color: "var(--color-orange)" },
   { text: "AGENTS", color: "var(--color-pink)" },
   { text: "RESEARCH", color: "var(--color-blue)" },
-  { text: "VENTURE", color: "var(--color-teal)" },
-  { text: "CLOUD", color: "var(--color-orange)" },
+  { text: "NLP", color: "var(--color-violet)" },
+  { text: "CLOUD", color: "var(--color-teal)" },
   { text: "OPEN SOURCE", color: "var(--color-violet)" },
+  { text: "DEVREL", color: "var(--color-blue)" },
 ];
 
 const MarqueeRow = ({

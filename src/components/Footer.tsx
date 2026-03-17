@@ -1,9 +1,9 @@
 const Footer = () => {
   return (
-    <footer className="relative py-14 px-8 md:px-12 border-t-[4px] border-[var(--color-text)]">
+    <footer id="contact" className="relative py-10 sm:py-14 px-4 sm:px-8 md:px-12 border-t-[4px] border-[var(--color-text)]">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Left — logo + copyright */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <span
             className="text-base font-mono font-bold text-white bg-[var(--color-text)] border-[4px] border-[var(--color-text)] px-3 py-1"
             style={{ boxShadow: "3px 3px 0px var(--color-border)" }}
@@ -17,7 +17,7 @@ const Footer = () => {
         </div>
 
         {/* Right — social links */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           <a
             href="https://github.com/kwt00"
             target="_blank"

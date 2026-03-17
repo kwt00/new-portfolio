@@ -65,8 +65,15 @@ body::after {
   color: #fff;
 }
 
-a, button {
-  cursor: none;
+*, a, button {
+  cursor: none !important;
+}
+
+/* Restore default cursor on touch / mobile devices */
+@media (hover: none), (pointer: coarse) {
+  *, a, button {
+    cursor: auto !important;
+  }
 }
 
 :focus-visible {

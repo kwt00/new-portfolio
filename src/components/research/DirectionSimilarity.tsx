@@ -125,17 +125,17 @@ const DirectionSimilarity = () => {
 
       {/* Color legend */}
       <div className="flex items-center justify-between mt-4">
-        <span className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em]">
-          Orthogonal (~0.21)
+        <span className="text-[8px] sm:text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em] shrink-0">
+          Orthogonal
         </span>
         <div
-          className="flex-1 mx-3 h-3 border-[2px] border-[var(--color-text)]"
+          className="flex-1 mx-2 sm:mx-3 h-2.5 sm:h-3 border-[2px] border-[var(--color-text)]"
           style={{
             background: `linear-gradient(to right, rgb(20,55,155), rgb(110,140,155), rgb(225,40,30))`,
           }}
         />
-        <span className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em]">
-          Identical (1.0)
+        <span className="text-[8px] sm:text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em] shrink-0">
+          Identical
         </span>
       </div>
     </div>

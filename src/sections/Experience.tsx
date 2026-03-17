@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import AnimatedContent from "../components/reactbits/AnimatedContent";
 import SpotlightCard from "../components/reactbits/SpotlightCard";
 
@@ -52,8 +52,20 @@ const roles: Role[] = [
 const Experience = () => {
   const [expandedIndex, setExpandedIndex] = useState<number>(0);
 
+  // Compute tenure dynamically from Jan 2025 start date
+  const tenure = useMemo(() => {
+    const start = new Date(2025, 0); // Jan 2025
+    const now = new Date();
+    let months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+    if (months < 1) months = 1;
+    const yrs = Math.floor(months / 12);
+    const mos = months % 12;
+    if (yrs === 0) return `${mos} mo${mos !== 1 ? "s" : ""}`;
+    return `${yrs} yr${yrs !== 1 ? "s" : ""} ${mos} mo${mos !== 1 ? "s" : ""}`;
+  }, []);
+
   return (
-    <section id="experience" className="relative py-40 px-8 md:px-12">
+    <section id="experience" className="relative py-20 sm:py-40 px-4 sm:px-8 md:px-12">
       <div className="max-w-6xl mx-auto">
         {/* Heading */}
         <AnimatedContent distance={30} delay={0}>
@@ -67,14 +79,14 @@ const Experience = () => {
               </span>
             </div>
             <span className="text-[var(--color-text-muted)] text-[13px] font-mono font-bold tracking-wider">
-              1 yr 3 mos
+              {tenure}
             </span>
           </div>
         </AnimatedContent>
 
         <AnimatedContent distance={30} delay={0.1}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-[-0.02em] leading-[1.1] mb-16">
-            Three roles. One mission.
+            Experience
           </h2>
         </AnimatedContent>
 
@@ -98,7 +110,7 @@ const Experience = () => {
                     />
 
                     <SpotlightCard
-                      className="cursor-pointer"
+                      className=""
                       spotlightColor={role.spotlightColor}
                     >
                       <div
@@ -134,7 +146,7 @@ const Experience = () => {
                         <div
                           className="overflow-hidden transition-all duration-500 ease-out"
                           style={{
-                            maxHeight: isExpanded ? `${role.bullets.length * 60}px` : "0px",
+                            maxHeight: isExpanded ? `${role.bullets.length * 100}px` : "0px",
                             opacity: isExpanded ? 1 : 0,
                           }}
                         >
