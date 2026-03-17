@@ -27,28 +27,16 @@ const Research = () => {
               Directional Routing{" "}
               <span className="text-[var(--color-text-muted)]">in Transformers</span>
             </h2>
-            <div className="flex flex-wrap gap-2 shrink-0 self-start">
-              <a
-                href="https://arxiv.org/abs/2603.14923"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1.5 border-[3px] border-[var(--color-text)] bg-[var(--color-pink)] text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-white transition-all duration-200 hover:bg-[var(--color-accent-dim)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
-                style={{ boxShadow: "2px 2px 0px var(--color-text)" }}
-                data-cursor-hover
-              >
-                Paper ↗
-              </a>
-              <a
-                href="https://github.com/kwt00/moe-exp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1.5 border-[3px] border-[var(--color-text)] bg-[var(--color-text)] text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-white transition-all duration-200 hover:bg-[var(--color-blue)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
-                style={{ boxShadow: "2px 2px 0px var(--color-border)" }}
-                data-cursor-hover
-              >
-                GitHub ↗
-              </a>
-            </div>
+            <a
+              href="https://arxiv.org/abs/2603.14923"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 self-start px-3 py-1.5 border-[3px] border-[var(--color-text)] bg-[var(--color-pink)] text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-white transition-all duration-200 hover:bg-[var(--color-accent-dim)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+              style={{ boxShadow: "2px 2px 0px var(--color-text)" }}
+              data-cursor-hover
+            >
+              Paper ↗
+            </a>
           </div>
           <p className="text-[var(--color-text-muted)] text-base leading-[1.8] max-w-2xl mb-20">
             A lightweight mechanism that gives each attention head learned

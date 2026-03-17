@@ -29,24 +29,12 @@ const NgramResearch = () => {
               N-gram Content{" "}
               <span className="text-[var(--color-text-muted)]">Completion</span>
             </h2>
-            <div className="flex flex-wrap gap-2 shrink-0 self-start">
-              <span
-                className="px-3 py-1.5 border-[3px] border-[var(--color-text)] bg-[var(--color-surface)] text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[var(--color-text-muted)] select-none"
-                style={{ boxShadow: "2px 2px 0px var(--color-text)" }}
-              >
-                Paper Coming Soon
-              </span>
-              <a
-                href="https://github.com/kwt00/ngram-model"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1.5 border-[3px] border-[var(--color-text)] bg-[var(--color-text)] text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-white transition-all duration-200 hover:bg-[var(--color-teal)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
-                style={{ boxShadow: "2px 2px 0px var(--color-border)" }}
-                data-cursor-hover
-              >
-                GitHub ↗
-              </a>
-            </div>
+            <span
+              className="shrink-0 self-start px-3 py-1.5 border-[3px] border-[var(--color-text)] bg-[var(--color-surface)] text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[var(--color-text-muted)] select-none"
+              style={{ boxShadow: "2px 2px 0px var(--color-text)" }}
+            >
+              Paper Coming Soon
+            </span>
           </div>
           <p className="text-[var(--color-text-muted)] text-base leading-[1.8] max-w-2xl mb-20">
             A suffix-array + NER pipeline for contract blank classification.
