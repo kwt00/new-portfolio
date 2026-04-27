@@ -403,9 +403,9 @@ const TranscoderArticle = () => {
             Anchoring is a real workflow, not a stunt. Researchers studying a
             specific layer's circuits often want that layer transcoded for
             interpretability while keeping the rest of the model untouched.
-            Anthropic's circuit-tracing work uses partial replacement in
-            exactly this way. For that workflow, iterative is the only viable
-            option here.
+            Lindsey et al. (2025) use partial MLP replacement in Anthropic's
+            circuit-tracing work on Claude. For that workflow, iterative is
+            the only viable option here.
           </p>
 
           <Figure
@@ -469,15 +469,19 @@ const TranscoderArticle = () => {
             picks tamer features."
           </p>
           <p>
-            One caveat remains. Higher cascade could in principle reflect
-            feature <em>importance</em> rather than entanglement: a feature
-            that participates in many circuits should cause large downstream
-            changes when ablated. A finer-grained analysis separating
-            disruption to related vs. unrelated downstream features would be
-            needed to fully resolve this question. But the random-selection
-            result is hard to explain by importance alone - randomly sampled
-            features should be similarly important on average across both
-            methods.
+            Two caveats. First, I test from layer 2 onward because layers 0
+            and 1 have minimal downstream depth for measuring cascade.
+            Second, higher cascade could in principle reflect feature{" "}
+            <em>importance</em> rather than entanglement: a feature that
+            participates in many circuits should cause large downstream
+            changes when ablated. Random sampling removes the most-active
+            selection bias, but matched-seed is not the same as
+            matched-importance. If E2E features are systematically more
+            load-bearing across the entire feature set - a plausible
+            consequence of coupled training - random sampling would not
+            control for this. A matched-importance comparison (ablating
+            features at the same importance percentile across methods) would
+            be needed to fully resolve this question.
           </p>
         </Section>
 
@@ -512,17 +516,29 @@ const TranscoderArticle = () => {
             9 of 12 layers</strong>. Layer 4 is -848.7%. Layer 3 is -653.8%.
             Negative variance explained means the transcoder's output is
             further from the real MLP's output than a constant prediction
-            would be. E2E outputs are 2-3x the norm of the real MLP outputs.
+            would be.
+          </p>
+          <p>
+            To characterize what E2E transcoders actually compute, I measured
+            the cosine similarity and norm ratio between each E2E
+            transcoder's output and the real MLP output on held-out data. At{" "}
+            <strong>mid-layers (1-8)</strong>, E2E outputs are nearly
+            orthogonal to the real MLP outputs (cosine 0.05-0.13) at 2-4x
+            the norm. They are not anti-correlated with the real MLP - they
+            point in essentially unrelated directions at inflated scale. At{" "}
+            <strong>edge layers (0, 10, 11)</strong>, cosine recovers to
+            0.43-0.65 and norms are closer to correct.
           </p>
           <p>
             This is the expected consequence of E2E's training objective.
             E2E transcoders are optimized to <em>collectively</em> produce
             correct logits, not to individually approximate MLPs. Each
             transcoder learns to produce outputs that, combined with all the
-            others, cancel to the right answer. Individually, those outputs
-            don't correspond to what the real MLP computes. They are valid
-            solutions to the loss they were trained against - just not the
-            same kind of object as a per-layer approximator.
+            others, cancel to the right answer. Individually, mid-layer
+            outputs bear almost no geometric relationship to the real MLP
+            computation. They are valid solutions to the loss they were
+            trained against - just not the same kind of object as a
+            per-layer approximator.
           </p>
           <p>
             This explains the cascade finding. E2E features cascade more
@@ -613,8 +629,9 @@ const TranscoderArticle = () => {
 
           <p>
             Each layer in iterative training is a standalone regression
-            problem, so the method is trivially parallel: with 12 GPUs,
-            training drops to roughly 4 minutes. End-to-end cannot be
+            problem, so the method is embarrassingly parallel across layers.
+            With multi-GPU parallelism, training time approaches the serial
+            activation-collection floor of ~2 minutes. End-to-end cannot be
             parallelized this way - the backward pass couples all layers.
           </p>
         </Section>
@@ -629,21 +646,22 @@ const TranscoderArticle = () => {
           <p>
             E2E produces transcoders optimized for collective output fidelity.
             It achieves 17% lower KL all-sparse, but its transcoders do not
-            individually approximate their target MLPs, have 1.89x more
-            feature co-dependence, and can't be deployed alongside real MLPs.
-            For applications where all-sparse fidelity is the only concern
-            and features will not be studied individually, E2E is the better
-            choice.
+            individually approximate their target MLPs, have 2.78x more
+            feature co-dependence under random-sampling cascade, and can't
+            be deployed alongside real MLPs. For applications where
+            all-sparse fidelity is the only concern and features will not be
+            studied individually, E2E is the better choice.
           </p>
           <p>
             Iterative produces transcoders optimized for per-layer MLP
             approximation. Each transcoder's features correspond to
             components of the real MLP computation, feature effects are more
-            localized, and transcoders can be mixed with real MLPs for higher
-            fidelity at selected layers. For circuit discovery - where you
-            need to trace individual features through the model and may want
-            to study a subset of layers - these tradeoffs are likely worth
-            making, at 18.5x lower cost.
+            localized (2.78x less cascade under random sampling), and
+            transcoders can be mixed with real MLPs for higher fidelity at
+            selected layers. For circuit discovery - where you need to trace
+            individual features through the model and may want to study a
+            subset of layers - these tradeoffs are likely worth making, at
+            18.5x lower cost.
           </p>
           <p>
             The fidelity gap (0.720 vs 0.613 all-sparse) appears structural:
