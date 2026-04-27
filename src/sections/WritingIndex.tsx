@@ -18,7 +18,7 @@ const articles: Article[] = [
     tag: "Mechanistic Interpretability",
     title: "Iterative Alternating Training for MLP Transcoders",
     abstract:
-      "A training method for MLP transcoders that converges in ~40 minutes (18.5x cheaper than end-to-end), produces features 1.89x more independent in ablation cascade tests, and supports anchoring - dropping KL from 0.720 to 0.283 by leaving some layers as real MLPs.",
+      "A training method for MLP transcoders that converges in ~40 minutes (18.5x cheaper than end-to-end), produces features 2.78x more independent under random-feature ablation, and supports anchoring - dropping KL from 0.720 to 0.283 by leaving some layers as real MLPs.",
     href: "/transcoders",
     accent: "var(--color-violet)",
   },

@@ -101,10 +101,10 @@ const TranscoderArticle = () => {
         >
           A training method for MLP transcoders that converges in roughly 40
           minutes on a single RTX 3090 (18.5x less than end-to-end's 739 min),
-          produces features 1.89x more independent in ablation cascade tests,
-          and supports anchoring - leaving some layers as real MLPs at
-          inference, where it drops KL from 0.720 to 0.283. End-to-end
-          transcoders, by their training objective, do not.
+          produces features that cascade 2.78x less under random-feature
+          ablation, and supports anchoring - leaving some layers as real
+          MLPs at inference, where it drops KL from 0.720 to 0.283.
+          End-to-end transcoders, by their training objective, do not.
         </p>
         <p
           className="text-[1.075rem] sm:text-[1.125rem] leading-[1.6] text-[var(--color-text-muted)] mb-10"
@@ -388,50 +388,50 @@ const TranscoderArticle = () => {
             the model is during feature ablation.
           </p>
           <p>
-            For each method, I took the 50 most active features at a given
-            layer, zeroed each one individually, re-ran the model with all
-            transcoders active, and measured the L2 disruption in feature
-            activations at every downstream layer. I repeated this across 30
-            prompts and averaged, testing at layers 2, 4, 6, 8, and 10.
+            For each method, I zero out a single feature at a single layer,
+            re-run the model with all transcoders active, and measure the L2
+            disruption in feature activations at every downstream layer. I
+            repeat across 30 prompts and test at layers 2, 4, 6, 8, and 10.
+          </p>
+          <p>
+            I run this test twice. The first pass selects the 50 most active
+            features per layer (method-dependent selection). The second pass
+            selects 50 random features per layer with the same random seed
+            for both methods (method-independent selection). The second pass
+            removes a real confound: E2E and iterative do not share features,
+            so a most-active comparison is comparing different feature sets
+            and a "more entangled" finding could in principle reflect a
+            difference in <em>which</em> features happen to fire most.
           </p>
 
           <Figure
             number="Figure 3"
-            caption="Single-feature ablations cascade 1.89x more in end-to-end transcoders than in iterative ones, with the gap widening at deeper layers. Hover any bar for the exact value."
+            caption="Ablation cascade. Left: 50 most-active features per layer (1.89x ratio). Right: 50 random features matched across methods (2.78x ratio). Toggle between selection methods. Hover any bar for the exact value."
           >
             <CascadeChart />
           </Figure>
 
           <p>
-            End-to-end features produce <strong>1.89x more downstream
-            disruption</strong> than iterative features when ablated. At layer
-            2, iterative cascade is 349 versus end-to-end's 636. At layer 8,
-            iterative is 99 versus end-to-end's 282 - a 2.84x ratio. The grand
-            mean across all tested layers is 205.7 for iterative and 389.6 for
-            end-to-end.
+            Under most-active selection, iterative features produce{" "}
+            <strong>1.89x less downstream disruption</strong> than E2E features
+            (grand mean cascade: 205.7 vs 389.6). Under random selection with
+            the same seed for both methods, the ratio increases to{" "}
+            <strong>2.78x</strong> (grand mean: 31.1 vs 86.3). The effect is
+            larger, not smaller, when the feature-selection confound is
+            removed - which is the right direction for "iterative features are
+            more independent" and the wrong direction for "iterative just
+            picks tamer features."
           </p>
           <p>
-            Ablating a single end-to-end feature also causes 1.48x more change
-            in output logits (mean logit delta: iterative 13.7, end-to-end
-            20.2). End-to-end features are not independent units of computation
-            - they are entangled with features at other layers. Iterative
-            features are closer to independent, making them more suitable for
-            the kind of one-at-a-time analysis that circuit discovery requires.
-          </p>
-          <p>
-            Two caveats are worth being upfront about. First, the "50 most
-            active" features are method-dependent: E2E and iterative do not
-            share features, so this is comparing different feature sets. A
-            matched-importance comparison (selecting features by their causal
-            contribution to a fixed set of prompts) would be a stronger test.
-            Second, higher cascade could in principle reflect feature{" "}
-            <em>importance</em> rather than entanglement - a feature that
-            participates in many circuits should cause large downstream
-            changes when ablated. The consistency of the ratio across layers
-            and the magnitude of the gap make pure-importance the unlikely
-            full explanation, but it cannot be ruled out without a finer
-            analysis that separates disruption to related vs. unrelated
-            downstream features.
+            One caveat remains. Higher cascade could in principle reflect
+            feature <em>importance</em> rather than entanglement: a feature
+            that participates in many circuits should cause large downstream
+            changes when ablated. A finer-grained analysis separating
+            disruption to related vs. unrelated downstream features would be
+            needed to fully resolve this question. But the random-selection
+            result is hard to explain by importance alone - randomly sampled
+            features should be similarly important on average across both
+            methods.
           </p>
         </Section>
 
@@ -596,21 +596,17 @@ const TranscoderArticle = () => {
             localized, and transcoders can be mixed with real MLPs for higher
             fidelity at selected layers. For circuit discovery - where you
             need to trace individual features through the model and may want
-            to study a subset of layers - iterative is the better choice, at
-            18.5x lower cost.
+            to study a subset of layers - these tradeoffs are likely worth
+            making, at 18.5x lower cost.
           </p>
           <p>
-            <strong>The fidelity gap is structural.</strong> I tried four
-            ways to close it: vanilla E2E fine-tuning from an iterative warm
-            start (KL diverged to 5.76), anchor-regularized fine-tuning
-            (preserved modularity, didn't match E2E), MLP-matching
-            regularized fine-tuning (KL diverged to 6.06), and retraining on
-            the all-sparse deployment distribution (no improvement, KL =
-            0.729). The gap reflects the same property the rest of this
-            write-up is about: per-layer independence precludes the
-            inter-layer error cancellation that E2E uses to achieve lower
-            KL. It's a property of the objectives, not a flaw in the
-            training procedure.
+            The fidelity gap (0.720 vs 0.613 all-sparse) appears structural:
+            per-layer independence precludes the inter-layer error
+            cancellation that E2E uses to reach lower KL. I attempted E2E
+            fine-tuning from an iterative warm start, which catastrophically
+            diverged (KL &gt; 5.0), and retraining on the all-sparse
+            deployment distribution, which produced no improvement. Closing
+            this gap without sacrificing modularity remains an open problem.
           </p>
         </Section>
 
@@ -649,17 +645,24 @@ const TranscoderArticle = () => {
             important follow-up.
           </p>
           <p>
-            <strong>Cascade test confound.</strong> Features are selected by
-            method-specific activation magnitude, and higher cascade could
-            in principle reflect feature importance rather than entanglement.
-            A matched-importance or random-sampling variant would be a fairer
-            comparison.
+            <strong>Single sparsity setting.</strong> All results use one
+            architecture (6,144 features, top-128). I have not run sparsity
+            sweeps - the variance-explained advantage and cascade gap could
+            change at different expansion factors or sparsity levels.
           </p>
           <p>
-            <strong>Single-seed E2E.</strong> Iterative numbers are mean +/-
-            std across 3 seeds (std at most 0.002 KL). E2E is reported from
-            one seed - multi-seed E2E would strengthen the comparison but
-            costs ~12 hours of GPU time per seed.
+            <strong>E2E error bars in flight.</strong> Iterative numbers are
+            mean +/- std across 3 seeds (std at most 0.002 KL). E2E
+            multi-seed runs are still in progress; numbers in the figures
+            are from one seed. The E2E results may move slightly when the
+            full 3-seed comparison lands.
+          </p>
+          <p>
+            <strong>Importance vs. entanglement.</strong> The random-feature
+            cascade test largely addresses the feature-selection confound
+            from the most-active version, but a finer analysis separating
+            disruption to related vs. unrelated downstream features would
+            still strengthen the entanglement claim.
           </p>
         </Section>
 
@@ -667,14 +670,14 @@ const TranscoderArticle = () => {
         <Section num="11" title="Takeaway">
           <p>
             Iterative alternating training trades a 17% all-sparse fidelity
-            gap for features that approximate their target MLPs, are 1.89x
-            more independent under ablation, support anchoring, and cost
-            18.5x less to train. For circuit discovery and other workflows
-            that need to reason about individual features or mix transcoders
-            with real MLPs, those tradeoffs are clearly worth making. For
-            workflows that only care about all-sparse output fidelity and
-            don't need to study features in isolation, E2E remains the
-            better choice.
+            gap for features that approximate their target MLPs, are 2.78x
+            more independent under random-feature ablation, support
+            anchoring, and cost 18.5x less to train. For circuit discovery
+            and other workflows that need to reason about individual
+            features or mix transcoders with real MLPs, those tradeoffs are
+            likely worth making. For workflows that only care about
+            all-sparse output fidelity and don't need to study features in
+            isolation, E2E remains the better choice.
           </p>
           <p>
             All training scripts, the 12 trained transcoders, evaluation code,
