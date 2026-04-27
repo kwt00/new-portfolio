@@ -2,10 +2,10 @@ import { useState, useCallback } from "react";
 import routingData from "../../data/routing_data.json";
 
 /**
- * Interactive Cross-Layer Direction Similarity Matrix — 12×12 grid.
+ * Interactive Cross-Layer Direction Similarity Matrix - 12x12 grid.
  * Uses REAL cosine similarity data extracted from the trained model.
  *
- * Diagonal ≈ 1.0 (self-similarity), off-diagonal ≈ 0.21 (near-orthogonal).
+ * Diagonal ~ 1.0 (self-similarity), off-diagonal ~ 0.21 (near-orthogonal).
  * The model independently learned perpendicular suppression directions
  * at every layer with no design pressure.
  */
@@ -13,21 +13,21 @@ import routingData from "../../data/routing_data.json";
 const LAYERS = routingData.config.n_layers;
 const SIMILARITY = routingData.direction_similarity;
 
-// Color scale tuned for the actual data range (0.2 – 1.0)
+// Color scale tuned for the actual data range (0.2 - 1.0)
 function simToColor(value: number): string {
   // Stretch: off-diagonal is ~0.21, diagonal is 1.0
-  // Map 0.15–1.0 to 0–1 for color interpolation
+  // Map 0.15-1.0 to 0-1 for color interpolation
   const t = Math.max(0, Math.min(1, (value - 0.15) / 0.85));
 
   if (t < 0.15) {
     // Deep blue (cold / orthogonal)
     return `rgb(${Math.round(20 + t * 200)}, ${Math.round(55 + t * 300)}, ${Math.round(155 + t * 100)})`;
   } else if (t < 0.5) {
-    // Blue → pale
+    // Blue -> pale
     const s = (t - 0.15) / 0.35;
     return `rgb(${Math.round(50 + s * 120)}, ${Math.round(100 + s * 80)}, ${Math.round(170 - s * 30)})`;
   } else {
-    // Pale → hot red
+    // Pale -> hot red
     const s = (t - 0.5) / 0.5;
     return `rgb(${Math.round(170 + s * 55)}, ${Math.round(180 - s * 140)}, ${Math.round(140 - s * 110)})`;
   }
@@ -50,7 +50,7 @@ const DirectionSimilarity = () => {
       {/* Axis label */}
       <div className="flex items-center mb-2 pl-8">
         <span className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.15em]">
-          Layer →
+          {"Layer ->"}
         </span>
       </div>
 
@@ -61,7 +61,7 @@ const DirectionSimilarity = () => {
             className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em]"
             style={{ writingMode: "vertical-lr", transform: "rotate(180deg)" }}
           >
-            Layer →
+            {"Layer ->"}
           </span>
         </div>
 
@@ -113,7 +113,7 @@ const DirectionSimilarity = () => {
                       className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-[var(--color-text)] text-[var(--color-bg)] text-[10px] font-mono font-bold whitespace-nowrap z-30 border-[2px] border-[var(--color-text)]"
                       style={{ boxShadow: "2px 2px 0px var(--color-text-muted)" }}
                     >
-                      L{i}↔L{j}: {value.toFixed(3)}
+                      {"L"}{i}{" <-> L"}{j}{": "}{value.toFixed(3)}
                     </div>
                   )}
                 </div>

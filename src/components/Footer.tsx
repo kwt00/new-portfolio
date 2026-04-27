@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <footer id="contact" className="relative py-10 sm:py-14 px-4 sm:px-8 md:px-12 border-t-[4px] border-[var(--color-text)]">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        {/* Left — logo + copyright */}
+        {/* Left - logo + copyright */}
         <div className="flex items-center gap-3 sm:gap-4">
           <span
             className="text-base font-mono font-bold text-white bg-[var(--color-text)] border-[4px] border-[var(--color-text)] px-3 py-1"
@@ -12,11 +12,11 @@ const Footer = () => {
           </span>
           <span className="w-[4px] h-5 bg-[var(--color-text)]" />
           <span className="text-[12px] text-[var(--color-text-muted)] font-mono tracking-wider font-bold">
-            © {new Date().getFullYear()} Kevin Taylor
+            (c) {new Date().getFullYear()} Kevin Taylor
           </span>
         </div>
 
-        {/* Right — social links */}
+        {/* Right - social links */}
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           <a
             href="https://github.com/kwt00"

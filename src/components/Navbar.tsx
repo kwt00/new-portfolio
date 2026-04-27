@@ -33,7 +33,7 @@ const Navbar = () => {
         }`}
       >
         <div className="max-w-6xl mx-auto px-8 md:px-12 flex items-center justify-between">
-          {/* Logo — bold mono, thick border box */}
+          {/* Logo - bold mono, thick border box */}
           <Magnet padding={40}>
             <a
               href="#home"
@@ -62,7 +62,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Hamburger — fat lines */}
+          {/* Hamburger - fat lines */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden flex flex-col gap-2 p-2"
@@ -88,7 +88,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile menu — bold, colorful */}
+      {/* Mobile menu - bold, colorful */}
       <div
         className={`fixed inset-0 z-[99] bg-[var(--color-bg)] flex flex-col items-center justify-center gap-14 transition-all duration-500 md:hidden ${
           menuOpen

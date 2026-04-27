@@ -15,19 +15,19 @@ const roles: Role[] = [
   {
     title: "Growth Engineer",
     type: "Full-time",
-    period: "Jul 2025 — Present",
+    period: "Jul 2025 - Present",
     color: "var(--color-pink)",
     spotlightColor: "rgba(232, 93, 117, 0.1)",
     bullets: [
       "Built core PAYGO and cloud-console features (referral system, promo logic, usage tracking)",
       "Debugged production model issues at launch, including context handling and tool-parsing failures",
-      "Helped Growth launch Cerebras Code from 0 → 1 and now building the Cerebras Code CLI",
+      "Helped Growth launch Cerebras Code from 0 -> 1 and now building the Cerebras Code CLI",
     ],
   },
   {
     title: "Developer Relations Intern",
     type: "Part-time",
-    period: "Feb 2025 — Jul 2025",
+    period: "Feb 2025 - Jul 2025",
     color: "var(--color-blue)",
     spotlightColor: "rgba(74, 126, 245, 0.1)",
     bullets: [
@@ -39,7 +39,7 @@ const roles: Role[] = [
   {
     title: "Marketing Intern",
     type: "Part-time",
-    period: "Jan 2025 — Feb 2025",
+    period: "Jan 2025 - Feb 2025",
     color: "var(--color-teal)",
     spotlightColor: "rgba(54, 194, 184, 0.1)",
     bullets: [

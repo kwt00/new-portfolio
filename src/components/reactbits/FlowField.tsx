@@ -9,7 +9,7 @@ interface FlowFieldProps {
 }
 
 /**
- * Flowing 3D wave mesh — horizontal contour lines rendered in perspective,
+ * Flowing 3D wave mesh - horizontal contour lines rendered in perspective,
  * displaced by layered sine waves. Mouse creates ripple distortions.
  * Grotesque-bold variant with thicker, more saturated lines.
  */

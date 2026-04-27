@@ -5,7 +5,7 @@ import TemplateHeatmap from "../components/ngram/TemplateHeatmap";
 import NgramSummary from "../components/ngram/NgramSummary";
 
 /**
- * NgramResearch section — interactive visualizations for the n-gram
+ * NgramResearch section - interactive visualizations for the n-gram
  * contract blank classifier paper. 305 parameters, matches GPT-5.
  *
  * 1. Model comparison bars (the money shot)
@@ -38,8 +38,8 @@ const NgramResearch = () => {
           </div>
           <p className="text-[var(--color-text-muted)] text-base leading-[1.8] max-w-2xl mb-20">
             A suffix-array + NER pipeline for contract blank classification.
-            305 learned parameters, 98.3% accuracy, 43× faster than GPT-5 few-shot
-            — no neural network, no embeddings. Just n-grams and structure.
+            305 learned parameters, 98.3% accuracy, 43x faster than GPT-5 few-shot
+            - no neural network, no embeddings. Just n-grams and structure.
           </p>
         </AnimatedContent>
 
@@ -83,7 +83,7 @@ const NgramResearch = () => {
             </div>
             <p className="text-[var(--color-text-muted)] text-[14px] leading-[1.8] mb-6">
               Parameters versus accuracy on a log scale. Our 305-parameter model
-              matches GPT-5 accuracy — orders of magnitude fewer parameters,
+              matches GPT-5 accuracy - orders of magnitude fewer parameters,
               same result.
             </p>
             <div className="flex-1">
@@ -149,7 +149,7 @@ const NgramResearch = () => {
               {[
                 { value: "305", label: "Parameters" },
                 { value: "98.3%", label: "Accuracy" },
-                { value: "43×", label: "Faster than GPT-5" },
+                { value: "43x", label: "Faster than GPT-5" },
                 { value: "$0", label: "API Cost" },
                 { value: "12/12", label: "Templates Covered" },
               ].map((stat, i) => (

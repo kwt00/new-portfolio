@@ -1,14 +1,14 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 
 /**
- * Animated Training Curve — scroll-triggered line chart.
- * Zoomed into the 10–50 PPL range where the gap between
+ * Animated Training Curve - scroll-triggered line chart.
+ * Zoomed into the 10-50 PPL range where the gap between
  * Baseline and Routed is clearly visible.
  *
  * Data from the directional routing paper (400M scale).
  */
 
-// Actual data points — only the region where gap matters
+// Actual data points - only the region where gap matters
 const STEPS =    [1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000];
 const BASELINE = [43,   35,   29,   25,   22,   20,   18.5, 17.5, 17,   16.3];
 const ROUTED =   [42,   32,   27,   23,   20,   16.5, 15,   14,   13.2, 12.6];
@@ -52,7 +52,7 @@ const TrainingCurve = () => {
     const cw = w - PAD.left - PAD.right;
     const ch = h - PAD.top - PAD.bottom;
 
-    // Zoomed scale — 10 to 48 PPL
+    // Zoomed scale - 10 to 48 PPL
     const yMin = 10;
     const yMax = 48;
     const xMin = 1500;
@@ -232,7 +232,7 @@ const TrainingCurve = () => {
             <div className="text-[#4a7ef5]">Baseline: {BASELINE[hoverIndex]} PPL</div>
             <div className="text-[#e85d75]">Routed: {ROUTED[hoverIndex]} PPL</div>
             <div className="text-[var(--color-teal)] mt-1">
-              Δ {(BASELINE[hoverIndex] - ROUTED[hoverIndex]).toFixed(1)} PPL better
+              Delta  {(BASELINE[hoverIndex] - ROUTED[hoverIndex]).toFixed(1)} PPL better
             </div>
           </div>
         )}

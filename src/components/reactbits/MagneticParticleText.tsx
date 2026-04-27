@@ -15,7 +15,7 @@ interface MagneticParticleTextProps {
 }
 
 /**
- * MagneticParticleText — high-perf variant.
+ * MagneticParticleText - high-perf variant.
  *
  * Renders text as particles with spring physics + cursor repulsion.
  * Optimised: capped DPR, wider sampling gap, no per-particle save/restore,
@@ -40,7 +40,7 @@ const MagneticParticleText: React.FC<MagneticParticleTextProps> = ({
   const timeRef = useRef(0);
   const initializedRef = useRef(false);
 
-  // SoA (struct-of-arrays) for particle data — much faster iteration
+  // SoA (struct-of-arrays) for particle data - much faster iteration
   const pData = useRef<{
     x: Float32Array;
     y: Float32Array;
@@ -53,7 +53,7 @@ const MagneticParticleText: React.FC<MagneticParticleTextProps> = ({
     count: number;
   }>({ x: new Float32Array(0), y: new Float32Array(0), vx: new Float32Array(0), vy: new Float32Array(0), originX: new Float32Array(0), originY: new Float32Array(0), size: new Float32Array(0), colorIdx: new Uint8Array(0), count: 0 });
 
-  // Fresh getBoundingClientRect on every mousemove — avoids stale rect offset
+  // Fresh getBoundingClientRect on every mousemove - avoids stale rect offset
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -124,7 +124,7 @@ const MagneticParticleText: React.FC<MagneticParticleTextProps> = ({
 
       const imageData = offCtx.getImageData(0, 0, w, h);
       const data = imageData.data;
-      // Wider gap → fewer particles → faster
+      // Wider gap -> fewer particles -> faster
       const gap = Math.max(2, Math.round(5 / particleDensity));
 
       // Count first to pre-allocate
@@ -216,7 +216,7 @@ const MagneticParticleText: React.FC<MagneticParticleTextProps> = ({
           d.vx[i] += (tx - d.x[i]) * springStiffness;
           d.vy[i] += (ty - d.y[i]) * springStiffness;
 
-          // Mouse repulsion — squared distance, no sqrt
+          // Mouse repulsion - squared distance, no sqrt
           if (isActive) {
             const mdx = d.x[i] - mx;
             const mdy = d.y[i] - my;
@@ -235,7 +235,7 @@ const MagneticParticleText: React.FC<MagneticParticleTextProps> = ({
           d.x[i] += d.vx[i];
           d.y[i] += d.vy[i];
 
-          // Draw — simple fillRect, no save/restore
+          // Draw - simple fillRect, no save/restore
           const s = d.size[i];
           ctx.fillRect(d.x[i] - s * 0.5, d.y[i] - s * 0.5, s, s);
         }

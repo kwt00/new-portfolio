@@ -2,9 +2,9 @@ import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import routingData from "../../data/routing_data.json";
 
 /**
- * Live Routing Demo — auto-types real prompts from the trained 433M-parameter
+ * Live Routing Demo - auto-types real prompts from the trained 433M-parameter
  * directional routing model. Each heatmap is the REAL routing output from an
- * actual forward pass — no estimation, no heuristics.
+ * actual forward pass - no estimation, no heuristics.
  *
  * Click a domain to watch the model's routing pattern emerge character by
  * character as the prompt types itself out.
@@ -42,7 +42,7 @@ STORED_PROMPTS.forEach((p) => {
   }
 });
 
-// Color scale: 0.0 → deep blue (suppressed), 1.0 → hot red (active)
+// Color scale: 0.0 -> deep blue (suppressed), 1.0 -> hot red (active)
 function valueToColor(value: number): string {
   const t = Math.max(0, Math.min(1, (value - 0.05) / 0.85));
   if (t < 0.35) {
@@ -138,7 +138,7 @@ const LiveRoutingDemo = () => {
     };
   }, [isTyping, charIndex, activePrompt]);
 
-  // Update heatmap as characters type — lerp from neutral to real pattern
+  // Update heatmap as characters type - lerp from neutral to real pattern
   useEffect(() => {
     if (!activePrompt) return;
 
@@ -193,7 +193,7 @@ const LiveRoutingDemo = () => {
   const startExample = useCallback((domain: string) => {
     if (typingRef.current) clearTimeout(typingRef.current);
 
-    // Same domain clicked while still typing → instant fill
+    // Same domain clicked while still typing -> instant fill
     if (domain === activeDomain && isTyping && activePrompt) {
       setCharIndex(activePrompt.text.length);
       setHeatmap([...activePrompt.flat]);
@@ -282,7 +282,7 @@ const LiveRoutingDemo = () => {
               </span>
             ) : (
               <span className="text-[var(--color-text-muted)]">
-                Select a domain to see real routing patterns…
+                Select a domain to see real routing patterns...
               </span>
             )}
           </div>
@@ -296,19 +296,19 @@ const LiveRoutingDemo = () => {
                   backgroundColor: DOMAIN_COLORS[dominantDomain] || "var(--color-surface)",
                 }}
               >
-                {dominantDomain} · {Math.round(progress * 100)}%
+                {dominantDomain} / {Math.round(progress * 100)}%
               </div>
             )}
             {!dominantDomain && (
               <span className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em]">
-                Select a prompt…
+                Select a prompt...
               </span>
             )}
           </div>
 
           <div className="mt-auto pt-3">
             <span className="text-[9px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em]">
-              · Real routing weights from trained 433M model forward pass
+              / Real routing weights from trained 433M model forward pass
             </span>
           </div>
         </div>
@@ -317,7 +317,7 @@ const LiveRoutingDemo = () => {
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.15em]">
-              Head →
+              {"Head ->"}
             </span>
             {dominantDomain && (
               <span
@@ -337,7 +337,7 @@ const LiveRoutingDemo = () => {
                 className="text-[10px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.1em]"
                 style={{ writingMode: "vertical-lr", transform: "rotate(180deg)" }}
               >
-                Layer →
+                {"Layer ->"}
               </span>
             </div>
 

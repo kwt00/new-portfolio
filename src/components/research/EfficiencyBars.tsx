@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
 /**
- * Efficiency wins — animated horizontal bars showing only the good stuff.
+ * Efficiency wins - animated horizontal bars showing only the good stuff.
  * All bars represent improvements the routed model achieves over baseline.
  */
 
@@ -19,7 +19,7 @@ const METRICS: Metric[] = [
     label: "Perplexity Reduction",
     value: 56,
     maxVal: 60,
-    display: "31–56%",
+    display: "31-56%",
     description: "Routing becomes the dominant computational pathway",
     color: "var(--color-pink)",
   },
@@ -27,7 +27,7 @@ const METRICS: Metric[] = [
     label: "Induction Accuracy",
     value: 93.4,
     maxVal: 100,
-    display: "93.4→0%",
+    display: "93.4->0%",
     description: "Disabling routing collapses induction to 0.0%",
     color: "var(--color-blue)",
   },
@@ -35,7 +35,7 @@ const METRICS: Metric[] = [
     label: "Factual Recall",
     value: 100,
     maxVal: 100,
-    display: "→ 0",
+    display: "-> 0",
     description: "Near-zero probability across all 8 test prompts without routing",
     color: "var(--color-teal)",
   },

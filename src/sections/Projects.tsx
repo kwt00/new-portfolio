@@ -78,7 +78,7 @@ const Projects = () => {
   return (
     <section id="projects" className="relative py-40 px-8 md:px-12">
       <div className="max-w-6xl mx-auto">
-        {/* Section label — thick bordered number */}
+        {/* Section label - thick bordered number */}
         <AnimatedContent distance={30} delay={0}>
           <div className="flex items-center gap-4 mb-16">
             <span
@@ -126,7 +126,7 @@ const Projects = () => {
                     onMouseLeave={() => setHoveredIndex(null)}
                     data-cursor-hover
                   >
-                    {/* Image — thick border on hover */}
+                    {/* Image - thick border on hover */}
                     <div
                       className="relative overflow-hidden mb-8 aspect-video bg-[var(--color-bg-secondary)] border-[3px] transition-colors duration-300"
                       style={{
@@ -145,7 +145,7 @@ const Projects = () => {
                         className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent transition-opacity duration-500"
                         style={{ opacity: hoveredIndex === i ? 0.05 : 0.3 }}
                       />
-                      {/* Year badge — bright accent fill */}
+                      {/* Year badge - bright accent fill */}
                       <span
                         className="absolute top-0 right-0 px-4 py-2 text-[12px] font-mono uppercase tracking-wider font-bold text-white"
                         style={{ backgroundColor: project.accent }}
@@ -188,7 +188,7 @@ const Projects = () => {
                       {project.description}
                     </p>
 
-                    {/* Tags — thick borders, filled accent on hover */}
+                    {/* Tags - thick borders, filled accent on hover */}
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag, ti) => (
                         <span

@@ -24,7 +24,7 @@ interface CellState {
 }
 
 /**
- * ScrollMosaic — a grid of small cells that fill with color as you scroll
+ * ScrollMosaic - a grid of small cells that fill with color as you scroll
  * past them, creating a wipe/reveal effect. Mouse hover triggers nearby cells.
  * Uses the thick-border grotesque style.
  */
@@ -43,7 +43,7 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
   const mouseRow = useRef(-1);
   const colsRef = useRef(cols);
 
-  // Respond to window resize — rebuild cells if col count changes
+  // Respond to window resize - rebuild cells if col count changes
   useEffect(() => {
     const handleResize = () => {
       const newCols = getColumns();
@@ -63,7 +63,7 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Scroll-driven fill: as the component scrolls into view, cells fill left→right
+  // Scroll-driven fill: as the component scrolls into view, cells fill left->right
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -95,10 +95,10 @@ const ScrollMosaic = ({ className = "" }: { className?: string }) => {
         prev.map((cell, i) => {
           const col = i % currentCols;
           const row = Math.floor(i / currentCols);
-          // Staggered reveal — wave from left to right, offset by row
+          // Staggered reveal - wave from left to right, offset by row
           const threshold = (col + row * 2) / (currentCols + ROWS * 2);
           const filled = progress > threshold;
-          // Mouse hover — light up cells near cursor
+          // Mouse hover - light up cells near cursor
           const hovered =
             mouseCol.current >= 0 &&
             Math.abs(col - mouseCol.current) <= 1 &&

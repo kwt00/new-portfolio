@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * Bold scroll progress bar — fills left-to-right across the top of the viewport.
+ * Bold scroll progress bar - fills left-to-right across the top of the viewport.
  * Cycles through accent colors as you scroll deeper.
  */
 const ScrollProgress = () => {

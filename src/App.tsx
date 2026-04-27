@@ -1,26 +1,35 @@
 import CustomCursor from "./components/reactbits/CustomCursor";
-import ScrollMosaic from "./components/ScrollMosaic";
 import Hero from "./sections/Hero";
-import Marquee from "./components/Marquee";
-import Research from "./sections/Research";
-import NgramResearch from "./sections/NgramResearch";
+import WritingIndex from "./sections/WritingIndex";
 import Experience from "./sections/Experience";
 import Footer from "./components/Footer";
+import TranscoderArticle from "./pages/TranscoderArticle";
+import DirectionalRoutingPage from "./pages/DirectionalRoutingPage";
+import NgramPage from "./pages/NgramPage";
+import { usePath } from "./lib/router";
+
+function Home() {
+  return (
+    <main>
+      <Hero />
+      <WritingIndex />
+      <Experience />
+    </main>
+  );
+}
 
 function App() {
+  const path = usePath().replace(/\/$/, "");
+  let page;
+  if (path === "/transcoders") page = <TranscoderArticle />;
+  else if (path === "/directional-routing") page = <DirectionalRoutingPage />;
+  else if (path === "/ngram-contracts") page = <NgramPage />;
+  else page = <Home />;
+
   return (
     <>
       <CustomCursor />
-      <main>
-        <Hero />
-        <Marquee />
-        <ScrollMosaic className="my-0 mt-40" />
-        <Experience />
-        <ScrollMosaic className="my-0" />
-        <Research />
-        <ScrollMosaic className="my-0" />
-        <NgramResearch />
-      </main>
+      {page}
       <Footer />
     </>
   );

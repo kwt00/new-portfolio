@@ -5,7 +5,7 @@ import EfficiencyBars from "../components/research/EfficiencyBars";
 import LiveRoutingDemo from "../components/research/LiveRoutingDemo";
 
 /**
- * Research section — four interactive visualizations:
+ * Research section - four interactive visualizations:
  * 1. Training curve (zoomed PPL, clear gap)
  * 2. Efficiency bars (cost vs gain)
  * 3. Cross-layer direction similarity (the dark diagonal)
@@ -35,12 +35,12 @@ const Research = () => {
               style={{ boxShadow: "2px 2px 0px var(--color-text)" }}
               data-cursor-hover
             >
-              Paper ↗
+              {"Paper ->"}
             </a>
           </div>
           <p className="text-[var(--color-text-muted)] text-base leading-[1.8] max-w-2xl mb-20">
             A lightweight mechanism that gives each attention head learned
-            suppression directions controlled by a shared router — 31–56%
+            suppression directions controlled by a shared router - 31-56%
             perplexity reduction at 3.9% parameter cost. Disabling routing
             collapses factual recall to near-zero and induction accuracy from
             93.4% to 0.0%. Published on arXiv, March 2026.
@@ -64,7 +64,7 @@ const Research = () => {
             </div>
             <p className="text-[var(--color-text-muted)] text-[14px] leading-[1.8] mb-6">
               Routed model converges to significantly lower perplexity with only
-              +16M parameters. The gap widens throughout training — directional
+              +16M parameters. The gap widens throughout training - directional
               routing gets <em>more</em> effective as the model learns.
             </p>
             <TrainingCurve />
@@ -85,7 +85,7 @@ const Research = () => {
             </div>
             <p className="text-[var(--color-text-muted)] text-[14px] leading-[1.8] mb-6">
               Perplexity reduction, zero-shot domain classification from routing
-              patterns alone, and orthogonal learned structure — all without
+              patterns alone, and orthogonal learned structure - all without
               explicit supervision.
             </p>
             <EfficiencyBars />
@@ -108,12 +108,12 @@ const Research = () => {
                 </h3>
               </div>
               <p className="text-[var(--color-text-muted)] text-[14px] leading-[1.8] mb-6">
-                Each layer learns 48 suppression directions (4 per head × 12 heads).
+                Each layer learns 48 suppression directions (4 per head x 12 heads).
                 Without any design pressure, these 576 directions self-organized into
                 nearly perpendicular subspaces across layers.
               </p>
               <p className="text-[var(--color-text-muted)] text-[14px] leading-[1.8] mb-6">
-                The diagonal lights up — each layer is similar only to itself.
+                The diagonal lights up - each layer is similar only to itself.
                 Off-diagonal is cold blue, meaning the directions learned at layer 3
                 are geometrically orthogonal to those at layer 8. The model carved
                 out independent feature channels at every depth.
@@ -123,7 +123,7 @@ const Research = () => {
                 style={{ boxShadow: "3px 3px 0px var(--color-text)" }}
               >
                 <span className="w-2 h-2 bg-[var(--color-pink)]" />
-                μ = −0.0001 cosine similarity (near-zero)
+                mu  = -0.0001 cosine similarity (near-zero)
               </div>
             </div>
 
@@ -153,8 +153,8 @@ const Research = () => {
             </div>
             <p className="text-[var(--color-text-muted)] text-[14px] leading-[1.8] mb-8 max-w-xl">
               Watch real routing weights activate as the model processes different
-              domains. Click code, math, prose, or factual to see how the 12×12
-              heatmap shifts — each pattern was extracted from a real forward pass.
+              domains. Click code, math, prose, or factual to see how the 12x12
+              heatmap shifts - each pattern was extracted from a real forward pass.
             </p>
             <div
               className="p-3 sm:p-6 md:p-8 border-[3px] sm:border-[4px] border-[var(--color-text)] bg-[var(--color-surface)]"
@@ -170,10 +170,10 @@ const Research = () => {
           <div className="mt-16 pt-8 border-t-[4px] border-[var(--color-text)]">
             <div className="flex flex-wrap gap-4 sm:gap-8">
               {[
-                { value: "31–56%", label: "PPL Reduction" },
+                { value: "31-56%", label: "PPL Reduction" },
                 { value: "3.9%", label: "Param Cost" },
                 { value: "576", label: "Learned Directions" },
-                { value: "93→0%", label: "Induction w/o Routing" },
+                { value: "93->0%", label: "Induction w/o Routing" },
                 { value: "433M", label: "Parameters" },
               ].map((stat, i) => (
                 <div key={i} className="flex items-baseline gap-1.5 sm:gap-2">

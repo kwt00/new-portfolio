@@ -29,7 +29,7 @@ const skillCategories = [
 const Skills = () => {
   return (
     <section id="skills" className="relative py-40 px-8 md:px-12 overflow-hidden">
-      {/* Squares background — very subtle, diagonal movement */}
+      {/* Squares background - very subtle, diagonal movement */}
       <Squares
         direction="diagonal"
         speed={0.2}

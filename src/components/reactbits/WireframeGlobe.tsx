@@ -135,7 +135,7 @@ const WireframeGlobe: React.FC<WireframeGlobeProps> = ({
       ctx.clearRect(0, 0, w, h);
 
       const elapsed = now - startTimeRef.current;
-      // Assembly progress: 0 → 1 with ease-out cubic
+      // Assembly progress: 0 -> 1 with ease-out cubic
       const rawProgress = Math.min(elapsed / assemblyDuration, 1);
       const progress = 1 - Math.pow(1 - rawProgress, 3);
 

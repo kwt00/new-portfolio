@@ -1,5 +1,5 @@
 /**
- * Double-row marquee ticker — outlined / stamp style.
+ * Double-row marquee ticker - outlined / stamp style.
  * Text is bold dark outlines on beige, with small colored accent squares.
  * Visually distinct from the filled comic-book CTA buttons.
  */
@@ -54,7 +54,7 @@ const MarqueeRow = ({
               className="w-2.5 h-2.5 shrink-0"
               style={{ backgroundColor: item.color }}
             />
-            {/* Outlined dark text — no fill */}
+            {/* Outlined dark text - no fill */}
             <span className="text-[14px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--color-text)] whitespace-nowrap">
               {item.text}
             </span>

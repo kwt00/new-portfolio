@@ -12,7 +12,7 @@ interface Block {
   rotation: number;
   phase: number; // for sine drift
   speed: number;
-  layer: number; // 0 = back, 1 = mid, 2 = front — parallax multiplier
+  layer: number; // 0 = back, 1 = mid, 2 = front - parallax multiplier
 }
 
 const COLORS = [
@@ -28,7 +28,7 @@ const SURFACE_COLOR = "var(--color-surface)";
 const TEXT_COLOR = "var(--color-text)";
 
 /**
- * Floating grotesque blocks — thick bordered rectangles in accent colors
+ * Floating grotesque blocks - thick bordered rectangles in accent colors
  * that drift, respond to cursor proximity, and parallax on scroll.
  * Pure DOM (no canvas) so they inherit the comic-book CSS aesthetic.
  */
@@ -109,7 +109,7 @@ const InteractiveBlocks = ({ className = "" }: { className?: string }) => {
         bx += Math.sin(t * block.speed + block.phase) * 12;
         by += Math.cos(t * block.speed * 0.7 + block.phase) * 8;
 
-        // Parallax — layers move at different rates on scroll
+        // Parallax - layers move at different rates on scroll
         const parallaxMultiplier = [0.02, 0.06, 0.12][block.layer];
         by += scrollOffset * parallaxMultiplier;
 
@@ -124,7 +124,7 @@ const InteractiveBlocks = ({ className = "" }: { className?: string }) => {
           by += (dy / dist) * force;
         }
 
-        // Rotation — base + slight mouse twist
+        // Rotation - base + slight mouse twist
         let rotation = block.rotation + Math.sin(t * block.speed * 0.5 + block.phase) * 3;
         if (dist < repelRadius && dist > 0) {
           rotation += (dx / dist) * 5;

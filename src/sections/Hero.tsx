@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Magnet from "../components/reactbits/Magnet";
 import FlowField from "../components/reactbits/FlowField";
 import MagneticParticleText from "../components/reactbits/MagneticParticleText";
 
@@ -7,7 +6,6 @@ const Hero = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Trigger staggered entrance after mount
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
@@ -17,24 +15,23 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden"
     >
-      {/* Flowing wave mesh background */}
+      {/* Subtle flowing background */}
       <div
         className="absolute inset-0 pointer-events-none transition-opacity duration-[2000ms]"
-        style={{ opacity: loaded ? 1 : 0 }}
+        style={{ opacity: loaded ? 0.7 : 0 }}
       >
         <FlowField
-          lineCount={45}
-          speed={1}
-          mouseInfluence={0.6}
+          lineCount={32}
+          speed={0.6}
+          mouseInfluence={0.4}
           colors={["#e85d75", "#4a7ef5", "#8b5cf6", "#36c2b8", "#f28b3a"]}
         />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 w-full px-4 sm:px-8 md:px-12 max-w-5xl mx-auto">
-        {/* Magnetic Particle Title — fades + slides up */}
+        {/* Magnetic Particle Title */}
         <div
-          className="h-[140px] md:h-[200px] lg:h-[260px] mb-12 transition-all duration-[1200ms] ease-out"
+          className="h-[140px] md:h-[200px] lg:h-[260px] mb-10 transition-all duration-[1200ms] ease-out"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(40px)",
@@ -55,71 +52,46 @@ const Hero = () => {
           />
         </div>
 
-        {/* CTAs — stagger after title */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-          {/* Experience — pink, hovers to blue */}
-          <div
-            className="transition-all duration-[800ms] ease-out w-full sm:w-auto"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(30px)",
-              transitionDelay: "400ms",
-            }}
-          >
-            <Magnet padding={50}>
-              <button
-                onClick={() => document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-[var(--color-pink)] text-white text-[11px] sm:text-[12px] font-mono uppercase tracking-[0.2em] font-bold border-[3px] sm:border-[4px] border-[var(--color-text)] transition-all duration-200 hover:bg-[var(--color-blue)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
-                style={{ boxShadow: "5px 5px 0px var(--color-text)" }}
-                data-cursor-hover
-              >
-                Experience
-              </button>
-            </Magnet>
-          </div>
-          {/* Research Projects — orange, hovers to yellow */}
-          <div
-            className="transition-all duration-[800ms] ease-out w-full sm:w-auto"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(30px)",
-              transitionDelay: "550ms",
-            }}
-          >
-            <Magnet padding={50}>
-              <button
-                onClick={() => document.getElementById("research")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-[var(--color-orange)] text-white text-[11px] sm:text-[12px] font-mono uppercase tracking-[0.2em] font-bold border-[3px] sm:border-[4px] border-[var(--color-text)] transition-all duration-200 hover:bg-[#e6b800] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
-                style={{ boxShadow: "5px 5px 0px var(--color-text)" }}
-                data-cursor-hover
-              >
-                Research Projects
-              </button>
-            </Magnet>
-          </div>
-          {/* Contact — teal, hovers to violet */}
-          <div
-            className="transition-all duration-[800ms] ease-out w-full sm:w-auto"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(30px)",
-              transitionDelay: "700ms",
-            }}
-          >
-            <Magnet padding={50}>
-              <button
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 bg-[var(--color-teal)] text-white text-[11px] sm:text-[12px] font-mono uppercase tracking-[0.2em] font-bold border-[3px] sm:border-[4px] border-[var(--color-text)] transition-all duration-200 hover:bg-[var(--color-violet)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
-                style={{ boxShadow: "5px 5px 0px var(--color-text)" }}
-                data-cursor-hover
-              >
-                Contact
-              </button>
-            </Magnet>
-          </div>
+        {/* Tagline */}
+        <p
+          className="text-center text-[1.125rem] sm:text-[1.375rem] md:text-[1.5rem] leading-[1.5] text-[var(--color-text-muted)] max-w-[640px] mx-auto transition-all duration-[1000ms] ease-out"
+          style={{
+            fontFamily: "var(--font-serif)",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(20px)",
+            transitionDelay: "350ms",
+          }}
+        >
+          Growth Engineer at Cerebras. I write about mechanistic interpretability, LLM architecture, and other technical problems I find interesting.
+        </p>
+
+        {/* Tiny nav row */}
+        <div
+          className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 transition-all duration-[800ms] ease-out"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(20px)",
+            transitionDelay: "550ms",
+          }}
+        >
+          {[
+            { label: "Writing", target: "writing" },
+            { label: "Experience", target: "experience" },
+            { label: "Contact", target: "contact" },
+          ].map((l) => (
+            <button
+              key={l.target}
+              onClick={() => document.getElementById(l.target)?.scrollIntoView({ behavior: "smooth" })}
+              className="group inline-flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--color-text)] hover:text-[var(--color-pink)] transition-colors duration-200"
+              data-cursor-hover
+            >
+              <span className="w-2 h-2 bg-[var(--color-text)] group-hover:bg-[var(--color-pink)] transition-colors duration-200" />
+              {l.label}
+            </button>
+          ))}
         </div>
 
-        {/* Scroll hint — fades in last */}
+        {/* Scroll hint */}
         <div
           className="flex justify-center mt-20 transition-all duration-[800ms] ease-out"
           style={{

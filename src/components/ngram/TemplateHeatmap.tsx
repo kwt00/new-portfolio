@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useMemo } from "react";
 
 /**
- * TemplateHeatmap — interactive per-template accuracy grid.
+ * TemplateHeatmap - interactive per-template accuracy grid.
  * Rows: models, Columns: contract templates. Hover to see exact values.
  * Column winners get a gold crown. "Ours" row is clearly highlighted.
  */
@@ -142,7 +142,7 @@ const TemplateHeatmap = () => {
                   }`}
                   style={{ opacity: rowProgress }}
                 >
-                  {isOursRow && <span className="text-[8px]">★</span>}
+                  {isOursRow && <span className="text-[8px]">*</span>}
                   {m.label}
                   {isOursRow && (
                     <span className="ml-auto text-[7px] opacity-75">{winCounts[m.key]}W</span>
@@ -188,7 +188,7 @@ const TemplateHeatmap = () => {
                         }`}
                         style={{ opacity: cellProgress }}
                       >
-                        {val}{(isWinner || isTied) && cellProgress > 0.5 ? " •" : ""}
+                        {val}{(isWinner || isTied) && cellProgress > 0.5 ? " *" : ""}
                       </span>
 
                       {isHovered && (
@@ -196,8 +196,8 @@ const TemplateHeatmap = () => {
                           className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-[var(--color-text)] text-[var(--color-bg)] text-[9px] font-mono font-bold whitespace-nowrap z-30"
                           style={{ boxShadow: "2px 2px 0px var(--color-text-muted)" }}
                         >
-                          {m.label} · {TEMPLATES[colIdx]}: {val}%
-                          {(isWinner || isTied) ? " ★ BEST" : ""}
+                          {m.label} / {TEMPLATES[colIdx]}: {val}%
+                          {(isWinner || isTied) ? " * BEST" : ""}
                         </div>
                       )}
                     </div>

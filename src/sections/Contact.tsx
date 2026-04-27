@@ -34,7 +34,7 @@ const Contact = () => {
   return (
     <section id="contact" className="relative py-40 px-8 md:px-12 overflow-hidden">
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Section label — thick bordered number */}
+        {/* Section label - thick bordered number */}
         <AnimatedContent distance={30} delay={0}>
           <div className="flex items-center gap-4 mb-16">
             <span
@@ -53,7 +53,7 @@ const Contact = () => {
         </AnimatedContent>
 
         <div className="grid lg:grid-cols-2 gap-20 lg:gap-28">
-          {/* Left — info */}
+          {/* Left - info */}
           <div>
             <AnimatedContent distance={30} delay={0.1}>
               <h2 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.1] tracking-[-0.02em] mb-10">
@@ -72,11 +72,11 @@ const Contact = () => {
             <AnimatedContent distance={20} delay={0.2}>
               <p className="text-[var(--color-text-muted)] text-base leading-[1.8] mb-12">
                 Have a project in mind? I'd love to hear about it. Whether it's a new
-                website, a rebrand, or a full-stack application — let's talk.
+                website, a rebrand, or a full-stack application - let's talk.
               </p>
             </AnimatedContent>
 
-            {/* Email — thick accent underline */}
+            {/* Email - thick accent underline */}
             <AnimatedContent distance={20} delay={0.3}>
               <div className="mb-12">
                 <span className="text-[12px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.2em] block mb-3 font-bold">
@@ -92,7 +92,7 @@ const Contact = () => {
               </div>
             </AnimatedContent>
 
-            {/* Social icons — thick borders, filled on hover */}
+            {/* Social icons - thick borders, filled on hover */}
             <AnimatedContent distance={20} delay={0.4}>
               <span className="text-[12px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.2em] block mb-4 font-bold">
                 Socials
@@ -125,7 +125,7 @@ const Contact = () => {
             </AnimatedContent>
           </div>
 
-          {/* Right — form with thick borders */}
+          {/* Right - form with thick borders */}
           <AnimatedContent distance={30} delay={0.2}>
             <form onSubmit={handleSubmit} className="space-y-10">
               {/* Name */}

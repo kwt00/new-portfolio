@@ -7,7 +7,7 @@ interface DraggableCardProps {
 
 /**
  * Draggable card with spring-back physics.
- * Drag it around — it snaps back to its origin with a bouncy spring.
+ * Drag it around - it snaps back to its origin with a bouncy spring.
  */
 const DraggableCard: React.FC<DraggableCardProps> = ({ children, className = "" }) => {
   const cardRef = useRef<HTMLDivElement>(null);

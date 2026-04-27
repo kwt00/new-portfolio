@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
 /**
- * NgramSummary — triple metric comparison: Accuracy, Latency, Cost.
+ * NgramSummary - triple metric comparison: Accuracy, Latency, Cost.
  * Our 305-param model dominates all three axes.
  */
 
@@ -128,7 +128,7 @@ const NgramSummary = () => {
               {/* Winner callout */}
               {metric.lowerBetter ? (
                 <div className="mt-3 text-[9px] font-mono text-[var(--color-blue)] font-bold uppercase tracking-[0.1em]">
-                  {metric.title === "Cost" ? "Free — no API calls" : "43× faster than GPT-5"}
+                  {metric.title === "Cost" ? "Free - no API calls" : "43x faster than GPT-5"}
                 </div>
               ) : (
                 <div className="mt-3 text-[9px] font-mono text-[var(--color-blue)] font-bold uppercase tracking-[0.1em]">

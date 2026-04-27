@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
 /**
- * ParamsVsAccuracy — the absurdity chart. 305 parameters vs ~1T,
+ * ParamsVsAccuracy - the absurdity chart. 305 parameters vs ~1T,
  * same accuracy. Log-scale X axis makes the gap visceral.
  */
 
@@ -117,7 +117,7 @@ const ParamsVsAccuracy = () => {
                     className="text-[9px] font-mono"
                     fill="var(--color-text-muted)"
                   >
-                    10{exp > 0 ? `^${exp}` : "⁰"}
+                    10{exp > 0 ? `^${exp}` : "0"}
                   </text>
                 </g>
               );
@@ -218,7 +218,7 @@ const ParamsVsAccuracy = () => {
               );
             })}
 
-            {/* Annotation: "305 params → same accuracy as 1T" */}
+            {/* Annotation: "305 params -> same accuracy as 1T" */}
             <g
               style={{
                 opacity: Math.max(0, (progress - 0.5) * 2),
@@ -241,7 +241,7 @@ const ParamsVsAccuracy = () => {
                 fill="var(--color-blue)"
                 fontStyle="italic"
               >
-                305 params →
+                {"305 params ->"}
               </text>
               <text
                 x={chartPadding.left + 10}

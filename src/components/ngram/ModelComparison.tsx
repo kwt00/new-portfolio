@@ -1,10 +1,10 @@
 import { useRef, useEffect, useState } from "react";
 
 /**
- * ModelComparison — animated bar chart showing classification accuracy
+ * ModelComparison - animated bar chart showing classification accuracy
  * across all baselines and model variants. The story: 305 params beats GPT-5.
  *
- * Y-axis zoomed to 80–100% so the gap between GPT-5 and ours is viscerally clear.
+ * Y-axis zoomed to 80-100% so the gap between GPT-5 and ours is viscerally clear.
  * Low baselines (Random, Majority) shown as small stubs with a break marker.
  */
 
@@ -155,7 +155,7 @@ const ModelComparison = () => {
                       {isBelow && (
                         <div className="absolute top-0 left-0 right-0 flex justify-center">
                           <span className="text-[7px] font-mono text-[var(--color-text-muted)] leading-none mt-0.5">
-                            ↓
+                            v
                           </span>
                         </div>
                       )}

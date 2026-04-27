@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 /**
- * Grotesque oversized arrow cursor — chunky, bold, editorial.
+ * Grotesque oversized arrow cursor - chunky, bold, editorial.
  * A blown-up version of the classic pointer with thick borders
  * that matches the neo-grotesque design system.
  */
@@ -101,7 +101,7 @@ const CustomCursor: React.FC = () => {
           transform="translate(1.5, 1.5)"
           opacity={0.2}
         />
-        {/* Arrow body — filled with bg color, thick stroke */}
+        {/* Arrow body - filled with bg color, thick stroke */}
         <path
           d="M6 3L6 25L11.5 19.5L16.5 28L20.5 26L15.5 17L23 17L6 3Z"
           fill={isPointer ? "var(--color-accent)" : "var(--color-pink)"}
