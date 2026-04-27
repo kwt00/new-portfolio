@@ -10,8 +10,8 @@ interface Bar {
 }
 
 const data: Bar[] = [
-  { config: "Iterative all-sparse", short: "Iter\nall-sparse", kl: 0.719, top1: 0.558, color: "var(--color-blue)" },
-  { config: "Iterative + 6 anchors", short: "Iter\n+ anchors", kl: 0.285, top1: 0.712, color: "var(--color-teal)", note: "best fidelity" },
+  { config: "Iterative all-sparse (3 seeds)", short: "Iter\nall-sparse", kl: 0.720, top1: 0.558, color: "var(--color-blue)" },
+  { config: "Iterative + 6 anchors (3 seeds)", short: "Iter\n+ anchors", kl: 0.283, top1: 0.713, color: "var(--color-teal)", note: "best fidelity" },
   { config: "E2E all-sparse", short: "E2E\nall-sparse", kl: 0.613, top1: 0.657, color: "var(--color-pink)" },
 ];
 

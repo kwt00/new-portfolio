@@ -10,8 +10,8 @@ interface Pt {
 }
 
 const points: Pt[] = [
-  { label: "Iterative all-sparse", time: 51,  kl: 0.719, mem: "1.2 GB", color: "var(--color-blue)", shape: "circle" },
-  { label: "Iterative + anchors",  time: 51,  kl: 0.285, mem: "1.2 GB", color: "var(--color-teal)", shape: "square" },
+  { label: "Iterative all-sparse", time: 40,  kl: 0.720, mem: "1.2 GB", color: "var(--color-blue)", shape: "circle" },
+  { label: "Iterative + anchors",  time: 40,  kl: 0.283, mem: "1.2 GB", color: "var(--color-teal)", shape: "square" },
   { label: "E2E all-sparse",       time: 739, kl: 0.613, mem: "4+ GB",  color: "var(--color-pink)", shape: "diamond" },
 ];
 
@@ -65,13 +65,13 @@ const ComputeChart = () => {
         <line x1={pad.l} x2={pad.l} y1={pad.t} y2={H - pad.b} stroke="var(--color-text)" strokeWidth="1" />
 
         {/* speed-up arrow from E2E to iter */}
-        <line x1={xOf(739)} y1={yOf(0.613)} x2={xOf(51) + 14} y2={yOf(0.719) - 4} stroke="var(--color-text-muted)" strokeWidth="1" strokeDasharray="2 3" markerEnd="url(#arrow)" />
+        <line x1={xOf(739)} y1={yOf(0.613)} x2={xOf(40) + 14} y2={yOf(0.720) - 4} stroke="var(--color-text-muted)" strokeWidth="1" strokeDasharray="2 3" markerEnd="url(#arrow)" />
         <defs>
           <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
             <path d="M0,0 L10,5 L0,10 z" fill="var(--color-text-muted)" />
           </marker>
         </defs>
-        <text x={(xOf(739) + xOf(51)) / 2} y={yOf(0.55)} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fontStyle="italic" fill="var(--color-text-muted)">14.5x faster</text>
+        <text x={(xOf(739) + xOf(40)) / 2} y={yOf(0.55)} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fontStyle="italic" fill="var(--color-text-muted)">18.5x faster</text>
 
         {points.map((p, i) => {
           const x = xOf(p.time);
