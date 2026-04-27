@@ -333,10 +333,11 @@ const TranscoderArticle = () => {
           </Figure>
 
           <p>
-            Each iteration produces diminishing returns. Round 1 retrains even
-            layers on shifted data (KL = 0.778, Delta = +0.084). Round 2
-            retrains odd layers (KL = 0.720, Delta = +0.058). Rounds 3 and 4
-            change KL by less than 0.015 - within noise - so I stop at round 2.
+            Each iteration produced diminishing returns. Round 1 retrained
+            even layers on shifted data (KL = 0.778, Delta = +0.084). Round 2
+            retrained odd layers (KL = 0.720, Delta = +0.058). Rounds 3 and 4
+            changed KL by less than 0.015 - within noise - so I stopped at
+            round 2.
           </p>
           <p>
             To validate that the alternating scheme specifically helps (rather
@@ -374,20 +375,17 @@ const TranscoderArticle = () => {
         {/* Section 4 fidelity */}
         <Section num="4" title="Fidelity">
           <p>
-            Before getting to the head-to-head numbers, it helps to anchor the
-            scale. Replacing all 12 MLPs with zeros gives KL = 14.95.
-            Replacing them with their per-layer mean activations gives KL =
-            9.37. Random untrained transcoders give KL = 10.61. Both trained
-            methods recover over 93% of the gap between random replacement and
-            perfect fidelity, so this is a comparison between two strong
-            approaches, not strong-vs-broken.
+            For scale: replacing all 12 MLPs with zeros gives KL = 14.95.
+            Replacing them with per-layer mean activations gives KL = 9.37.
+            Random untrained transcoders give KL = 10.61. Both methods here
+            recover over 93% of the gap between random replacement and
+            perfect fidelity.
           </p>
           <p>
-            All-sparse, iterative achieves <strong>KL = 0.720 +/- 0.002</strong>
+            All-sparse, iterative achieved <strong>KL = 0.720 +/- 0.002</strong>
             {" "}and Top-1 = 55.8% +/- 0.1% (mean +/- std across 3 seeds).
-            End-to-end achieves KL = 0.613 and Top-1 = 65.7%. E2E has 17%
-            lower KL and a 10-point higher Top-1 match rate. This is a real
-            fidelity gap, and the paper's headline number is honest about it.
+            End-to-end achieved KL = 0.613 and Top-1 = 65.7% - 17% lower KL
+            and 10 points higher Top-1.
           </p>
           <p>
             With anchoring (leaving 6 of 12 layers as real MLPs at inference),
@@ -434,20 +432,21 @@ const TranscoderArticle = () => {
             the model is during feature ablation.
           </p>
           <p>
-            For each method, I zero out a single feature at a single layer,
-            re-run the model with all transcoders active, and measure the L2
-            disruption in feature activations at every downstream layer. I
-            repeat across 30 prompts and test at layers 2, 4, 6, 8, and 10.
+            For each method I zeroed out a single feature at a single layer,
+            re-ran the model with all transcoders active, and measured the
+            L2 disruption in feature activations at every downstream layer.
+            This was averaged across 30 prompts at layers 2, 4, 6, 8, and 10.
           </p>
           <p>
-            I run this test twice. The first pass selects the 50 most active
-            features per layer (method-dependent selection). The second pass
-            selects 50 random features per layer with the same random seed
-            for both methods (method-independent selection). The second pass
-            removes a real confound: E2E and iterative do not share features,
-            so a most-active comparison is comparing different feature sets
-            and a "more entangled" finding could in principle reflect a
-            difference in <em>which</em> features happen to fire most.
+            I ran this test twice. The first pass selected the 50 most
+            active features per layer (method-dependent selection). The
+            second pass selected 50 random features per layer with the same
+            random seed for both methods (method-independent selection). The
+            random pass matters because E2E and iterative do not share
+            features - a most-active comparison is comparing different
+            feature sets, and a "more entangled" finding could otherwise
+            reflect a difference in <em>which</em> features happen to fire
+            most.
           </p>
 
           <Figure
@@ -458,30 +457,27 @@ const TranscoderArticle = () => {
           </Figure>
 
           <p>
-            Under most-active selection, iterative features produce{" "}
-            <strong>1.89x less downstream disruption</strong> than E2E features
-            (grand mean cascade: 205.7 vs 389.6). Under random selection with
-            the same seed for both methods, the ratio increases to{" "}
-            <strong>2.78x</strong> (grand mean: 31.1 vs 86.3). The effect is
-            larger, not smaller, when the feature-selection confound is
-            removed - which is the right direction for "iterative features are
-            more independent" and the wrong direction for "iterative just
-            picks tamer features."
+            Under most-active selection, iterative features produced{" "}
+            <strong>1.89x less downstream disruption</strong> than E2E
+            features (grand mean cascade: 205.7 vs 389.6). Under random
+            selection with the same seed for both methods, the ratio grew
+            to <strong>2.78x</strong> (grand mean: 31.1 vs 86.3). The gap
+            widens when the selection confound is removed, not the other
+            way around.
           </p>
           <p>
-            Two caveats. First, I test from layer 2 onward because layers 0
-            and 1 have minimal downstream depth for measuring cascade.
-            Second, higher cascade could in principle reflect feature{" "}
-            <em>importance</em> rather than entanglement: a feature that
+            A couple of caveats. The test starts at layer 2 because layers
+            0 and 1 don't have enough downstream depth to measure cascade
+            cleanly. And higher cascade could in principle reflect feature{" "}
+            <em>importance</em> rather than entanglement - a feature that
             participates in many circuits should cause large downstream
-            changes when ablated. Random sampling removes the most-active
-            selection bias, but matched-seed is not the same as
-            matched-importance. If E2E features are systematically more
-            load-bearing across the entire feature set - a plausible
-            consequence of coupled training - random sampling would not
-            control for this. A matched-importance comparison (ablating
-            features at the same importance percentile across methods) would
-            be needed to fully resolve this question.
+            changes when ablated. Random sampling controls for activation
+            magnitude but not for importance: if E2E features are
+            systematically more load-bearing across the whole feature set
+            (a plausible consequence of coupled training), random sampling
+            wouldn't catch it. The cleaner test would be matched-importance
+            ablation - sampling features at the same importance percentile
+            across methods - and that's the next thing to run.
           </p>
         </Section>
 
@@ -576,15 +572,15 @@ const TranscoderArticle = () => {
           </Figure>
 
           <p>
-            Iterative all-sparse shows a large spike at layer 2 (39x
-            amplification), after which errors plateau through layers 3-10 and
-            the residual stream self-corrects. With anchoring, the maximum
-            delta drops 7x (from 4850 to 702 at layer 11). End-to-end all-sparse
-            shows a smaller spike (4.5x at layer 2) and 4.7x less total error
-            at the final layer than iterative, yet only 17% lower KL.
-            LayerNorm and the unembedding absorb magnitude-level differences.
-            The KL gap between the methods is driven by directional error,
-            not norm.
+            Iterative all-sparse showed a large spike at layer 2 (39x
+            amplification), after which errors plateaued through layers
+            3-10 as the residual stream self-corrected. With anchoring, the
+            maximum delta dropped 7x (from 4850 to 702 at layer 11).
+            End-to-end all-sparse showed a smaller spike (4.5x at layer 2)
+            and 4.7x less total error at the final layer than iterative -
+            yet only 17% lower KL. LayerNorm and the unembedding absorb
+            magnitude-level differences, so the KL gap between methods was
+            driven by directional error, not norm.
           </p>
           <p>
             I also measured attention pattern preservation - the cosine
@@ -600,13 +596,13 @@ const TranscoderArticle = () => {
           </Figure>
 
           <p>
-            Both methods produce near-orthogonal attention patterns at middle
-            layers (cosine 0.16-0.24) when deployed all-sparse. This is a
+            Both methods produced near-orthogonal attention patterns at
+            middle layers (cosine 0.16-0.24) when deployed all-sparse - a
             property of full MLP replacement, not specific to either method.
-            Anchoring recovers attention cosine to 0.45-0.79 for iterative
-            transcoders. The model is remarkably tolerant of large
-            attention-pattern shifts while maintaining usable output
-            distributions.
+            Anchoring recovered attention cosine to 0.45-0.79 for iterative
+            transcoders. The model turned out to be remarkably tolerant of
+            large attention-pattern shifts while still producing usable
+            output distributions.
           </p>
         </Section>
 
