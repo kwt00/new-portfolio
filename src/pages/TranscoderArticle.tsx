@@ -43,11 +43,15 @@ interface SectionProps {
 }
 
 const Section = ({ num, title, children }: SectionProps) => (
-  <section className="mt-16 mb-2 scroll-mt-24">
+  <section id={`s${num}`} className="mt-16 mb-2 scroll-mt-24">
     <div className="flex items-baseline gap-3 mb-3">
-      <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+      <a
+        href={`#s${num}`}
+        className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)] hover:text-[var(--color-violet)] transition-colors duration-150"
+        data-cursor-hover
+      >
         Section {num}
-      </span>
+      </a>
     </div>
     <h2 className="font-serif text-[1.875rem] sm:text-[2.125rem] font-semibold leading-[1.15] tracking-[-0.01em] mb-6 text-[var(--color-text)]">
       {title}
@@ -60,9 +64,51 @@ const TranscoderArticle = () => {
   useEffect(() => {
     document.title =
       "Iterative Alternating Training for MLP Transcoders - Kevin Taylor";
-    window.scrollTo(0, 0);
+
+    // On mount: scroll to hash if present, else top.
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      requestAnimationFrame(() => {
+        document.getElementById(hash)?.scrollIntoView({ block: "start" });
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
+
     return () => {
       document.title = "Kevin Taylor - Portfolio";
+    };
+  }, []);
+
+  // Scroll spy: rewrite #hash in the URL to the section nearest the top.
+  useEffect(() => {
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("section[id^='s']")
+    ).filter((el) => /^s\d+$/.test(el.id));
+    if (!sections.length) return;
+
+    let raf = 0;
+    const update = () => {
+      const offset = 140; // px from top counted as "in view"
+      let active = sections[0].id;
+      for (const el of sections) {
+        if (el.getBoundingClientRect().top - offset <= 0) active = el.id;
+        else break;
+      }
+      const want = `#${active}`;
+      if (window.location.hash !== want) {
+        window.history.replaceState(null, "", want);
+      }
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
