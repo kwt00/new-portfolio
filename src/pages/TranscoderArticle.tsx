@@ -90,14 +90,27 @@ const TranscoderArticle = () => {
     let raf = 0;
     const update = () => {
       const offset = 140; // px from top counted as "in view"
-      let active = sections[0].id;
+      let active: string | null = null;
       for (const el of sections) {
         if (el.getBoundingClientRect().top - offset <= 0) active = el.id;
         else break;
       }
-      const want = `#${active}`;
-      if (window.location.hash !== want) {
-        window.history.replaceState(null, "", want);
+      // Section 1 is the implicit top of the article - no hash until s2.
+      if (active === "s1") active = null;
+
+      if (active === null) {
+        if (window.location.hash) {
+          window.history.replaceState(
+            null,
+            "",
+            window.location.pathname + window.location.search
+          );
+        }
+      } else {
+        const want = `#${active}`;
+        if (window.location.hash !== want) {
+          window.history.replaceState(null, "", want);
+        }
       }
     };
     const onScroll = () => {
