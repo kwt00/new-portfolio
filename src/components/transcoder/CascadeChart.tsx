@@ -16,9 +16,17 @@ const randomData = [
   { layer: 10, iter: 9.1, e2e: 16.9 },
 ];
 
+const importanceData = [
+  { layer: 2, iter: 60.1, e2e: 176.6 },
+  { layer: 4, iter: 54.0, e2e: 107.6 },
+  { layer: 6, iter: 36.4, e2e: 90.6 },
+  { layer: 8, iter: 22.6, e2e: 53.3 },
+  { layer: 10, iter: 6.8, e2e: 17.3 },
+];
+
 const VIEWS = {
   "most-active": {
-    label: "Most-active features",
+    label: "Most-active",
     sub: "method-dependent selection",
     data: mostActiveData,
     yMax: 700,
@@ -26,12 +34,20 @@ const VIEWS = {
     grand: { iter: 205.7, e2e: 389.6 },
   },
   random: {
-    label: "Random features (matched seed)",
+    label: "Random (matched seed)",
     sub: "method-independent selection",
     data: randomData,
     yMax: 200,
     ratio: "2.78x",
     grand: { iter: 31.1, e2e: 86.3 },
+  },
+  importance: {
+    label: "Matched importance",
+    sub: "matched importance percentile",
+    data: importanceData,
+    yMax: 200,
+    ratio: "2.48x",
+    grand: { iter: 36.0, e2e: 89.1 },
   },
 } as const;
 
@@ -53,12 +69,12 @@ const CascadeChart = () => {
   const yOf = (val: number) => pad.t + (1 - val / v.yMax) * innerH;
 
   // Make tick marks responsive to yMax
-  const ticks = view === "random" ? [0, 50, 100, 150, 200] : [0, 200, 400, 600];
+  const ticks = view === "most-active" ? [0, 200, 400, 600] : [0, 50, 100, 150, 200];
 
   return (
     <div className="relative w-full">
       {/* Toggle */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
+      <div className="flex flex-wrap items-center gap-2 mb-5 pb-4 border-b-[1px] border-[var(--color-border)]">
         {(Object.keys(VIEWS) as ViewKey[]).map((k) => {
           const on = view === k;
           return (

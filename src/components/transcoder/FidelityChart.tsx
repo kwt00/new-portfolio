@@ -4,15 +4,34 @@ interface Bar {
   config: string;
   short: string;
   kl: number;
+  klStd?: number;
   top1: number;
+  top1Std?: number;
   color: string;
-  note?: string;
 }
 
 const data: Bar[] = [
-  { config: "Iterative all-sparse (3 seeds)", short: "Iter\nall-sparse", kl: 0.720, top1: 0.558, color: "var(--color-blue)" },
-  { config: "Iterative + 6 anchors (3 seeds)", short: "Iter\n+ anchors", kl: 0.283, top1: 0.713, color: "var(--color-teal)", note: "best fidelity" },
-  { config: "E2E all-sparse", short: "E2E\nall-sparse", kl: 0.613, top1: 0.657, color: "var(--color-pink)" },
+  {
+    config: "Iterative all-sparse (3 seeds)",
+    short: "Iter\nall-sparse",
+    kl: 0.720, klStd: 0.002,
+    top1: 0.558, top1Std: 0.001,
+    color: "var(--color-blue)",
+  },
+  {
+    config: "Iterative + 6 anchors (3 seeds)",
+    short: "Iter\n+ anchors",
+    kl: 0.283, klStd: 0.001,
+    top1: 0.713, top1Std: 0.001,
+    color: "var(--color-teal)",
+  },
+  {
+    config: "E2E all-sparse (3 seeds)",
+    short: "E2E\nall-sparse",
+    kl: 0.426, klStd: 0.134,
+    top1: 0.737, top1Std: 0.057,
+    color: "var(--color-pink)",
+  },
 ];
 
 const W = 640, H = 340;
@@ -51,6 +70,13 @@ const FidelityChart = () => {
           const topX = cx + 4;
           const klBarTop = yKL(d.kl);
           const topBarTop = yTop(d.top1);
+
+          // Error bar whiskers (visible if std large enough to render)
+          const klStdPx = d.klStd ? Math.abs(yKL(d.kl - d.klStd) - yKL(d.kl + d.klStd)) / 2 : 0;
+          const topStdPx = d.top1Std ? Math.abs(yTop(d.top1 - d.top1Std) - yTop(d.top1 + d.top1Std)) / 2 : 0;
+          const showKLErr = klStdPx > 4;
+          const showTopErr = topStdPx > 4;
+
           return (
             <g key={i}>
               {/* KL bar */}
@@ -67,7 +93,21 @@ const FidelityChart = () => {
                 onMouseLeave={() => setHover(null)}
                 style={{ cursor: "pointer", transition: "opacity 0.15s" }}
               />
-              {/* Top-1 bar (lighter, hatched feel via opacity) */}
+              {showKLErr && (
+                <g pointerEvents="none">
+                  <line x1={klX + barW / 2} x2={klX + barW / 2}
+                        y1={yKL(d.kl + (d.klStd ?? 0))} y2={yKL(d.kl - (d.klStd ?? 0))}
+                        stroke="var(--color-text)" strokeWidth="1.25" />
+                  <line x1={klX + barW / 2 - 5} x2={klX + barW / 2 + 5}
+                        y1={yKL(d.kl + (d.klStd ?? 0))} y2={yKL(d.kl + (d.klStd ?? 0))}
+                        stroke="var(--color-text)" strokeWidth="1.25" />
+                  <line x1={klX + barW / 2 - 5} x2={klX + barW / 2 + 5}
+                        y1={yKL(d.kl - (d.klStd ?? 0))} y2={yKL(d.kl - (d.klStd ?? 0))}
+                        stroke="var(--color-text)" strokeWidth="1.25" />
+                </g>
+              )}
+
+              {/* Top-1 bar */}
               <rect
                 x={topX}
                 y={topBarTop}
@@ -83,13 +123,27 @@ const FidelityChart = () => {
                 onMouseLeave={() => setHover(null)}
                 style={{ cursor: "pointer", transition: "opacity 0.15s" }}
               />
+              {showTopErr && (
+                <g pointerEvents="none">
+                  <line x1={topX + barW / 2} x2={topX + barW / 2}
+                        y1={yTop(d.top1 + (d.top1Std ?? 0))} y2={yTop(d.top1 - (d.top1Std ?? 0))}
+                        stroke="var(--color-text)" strokeWidth="1.25" />
+                  <line x1={topX + barW / 2 - 5} x2={topX + barW / 2 + 5}
+                        y1={yTop(d.top1 + (d.top1Std ?? 0))} y2={yTop(d.top1 + (d.top1Std ?? 0))}
+                        stroke="var(--color-text)" strokeWidth="1.25" />
+                  <line x1={topX + barW / 2 - 5} x2={topX + barW / 2 + 5}
+                        y1={yTop(d.top1 - (d.top1Std ?? 0))} y2={yTop(d.top1 - (d.top1Std ?? 0))}
+                        stroke="var(--color-text)" strokeWidth="1.25" />
+                </g>
+              )}
+
               {/* config label */}
               {d.short.split("\n").map((line, li) => (
                 <text key={li} x={cx} y={H - pad.b + 16 + li * 12} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fill="var(--color-text)">{line}</text>
               ))}
-              {/* values on bars */}
-              <text x={klX + barW / 2} y={klBarTop - 6} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fontWeight="700" fill="var(--color-text)">{d.kl.toFixed(3)}</text>
-              <text x={topX + barW / 2} y={topBarTop - 6} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fontWeight="700" fill="var(--color-text-muted)">{(d.top1 * 100).toFixed(1)}%</text>
+              {/* values on bars (place above any whisker if visible) */}
+              <text x={klX + barW / 2} y={Math.min(klBarTop, yKL(d.kl + (d.klStd ?? 0))) - 6} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fontWeight="700" fill="var(--color-text)">{d.kl.toFixed(3)}</text>
+              <text x={topX + barW / 2} y={Math.min(topBarTop, yTop(d.top1 + (d.top1Std ?? 0))) - 6} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="10" fontWeight="700" fill="var(--color-text-muted)">{(d.top1 * 100).toFixed(1)}%</text>
             </g>
           );
         })}
@@ -104,6 +158,7 @@ const FidelityChart = () => {
           <text x="14" y="9" fontFamily="var(--font-mono)" fontSize="9" fill="var(--color-text-muted)" letterSpacing="0.1em">SOLID = KL</text>
           <rect x="100" y="0" width="10" height="10" fill="var(--color-text)" fillOpacity="0.35" stroke="var(--color-text)" strokeDasharray="2 1.5" />
           <text x="114" y="9" fontFamily="var(--font-mono)" fontSize="9" fill="var(--color-text-muted)" letterSpacing="0.1em">DASHED = TOP-1</text>
+          <text x="220" y="9" fontFamily="var(--font-mono)" fontSize="9" fill="var(--color-text-muted)" letterSpacing="0.1em">WHISKERS = +/- 1 STD</text>
         </g>
       </svg>
       {hover && (
@@ -118,7 +173,9 @@ const FidelityChart = () => {
         >
           {data[hover.i].config}
           {" / "}
-          {hover.metric === "kl" ? `KL ${data[hover.i].kl.toFixed(3)}` : `Top-1 ${(data[hover.i].top1 * 100).toFixed(1)}%`}
+          {hover.metric === "kl"
+            ? `KL ${data[hover.i].kl.toFixed(3)}${data[hover.i].klStd ? ` +/- ${data[hover.i].klStd?.toFixed(3)}` : ""}`
+            : `Top-1 ${(data[hover.i].top1 * 100).toFixed(1)}%${data[hover.i].top1Std ? ` +/- ${((data[hover.i].top1Std ?? 0) * 100).toFixed(1)}%` : ""}`}
         </div>
       )}
     </div>

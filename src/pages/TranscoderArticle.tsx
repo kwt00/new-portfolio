@@ -23,12 +23,12 @@ interface FigureProps {
 }
 
 const Figure = ({ number, caption, children }: FigureProps) => (
-  <figure className="my-12">
-    <div className="border-[1.5px] border-[var(--color-border)] bg-[var(--color-bg)] p-3 sm:p-5">
+  <figure className="my-14">
+    <div className="border-[1.5px] border-[var(--color-border)] bg-[var(--color-bg)] px-4 sm:px-6 pt-4 sm:pt-6 pb-5 sm:pb-7">
       {children}
     </div>
-    <figcaption className="mt-3 flex gap-3 text-[14px] leading-[1.55] text-[var(--color-text-muted)]">
-      <span className="shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text)] pt-1">
+    <figcaption className="mt-4 flex gap-3 text-[14px] leading-[1.6] text-[var(--color-text-muted)] px-1">
+      <span className="shrink-0 font-mono text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-text)] pt-[3px]">
         {number}
       </span>
       <span className="font-serif italic">{caption}</span>
@@ -160,12 +160,12 @@ const TranscoderArticle = () => {
         >
           A training method for MLP transcoders that converges in roughly 40
           minutes on a single RTX 3090 (18.5x less than end-to-end's 739
-          min), is reproducible across seeds (KL std 0.002 vs E2E's ~0.15
-          across the two completed seeds), produces features that cascade
-          2.78x less under random-feature ablation, and supports anchoring -
-          leaving some layers as real MLPs at inference, where it drops KL
-          from 0.720 to 0.283. End-to-end transcoders, by their training
-          objective, do not.
+          min), is reproducible across seeds (KL std 0.002 vs E2E's 0.134
+          across 3 seeds - 67x more variable), produces features that cascade
+          2-3x less under all three feature-selection methods, and supports
+          anchoring - leaving some layers as real MLPs at inference, where
+          it drops KL from 0.720 to 0.283. End-to-end transcoders, by their
+          training objective, do not.
         </p>
         <p
           className="text-[1.075rem] sm:text-[1.125rem] leading-[1.6] text-[var(--color-text-muted)] mb-10"
@@ -397,31 +397,35 @@ const TranscoderArticle = () => {
             perfect fidelity.
           </p>
           <p>
-            All-sparse, iterative achieved <strong>KL = 0.720 +/- 0.002</strong>
-            {" "}and Top-1 = 55.8% +/- 0.1% across 3 seeds. End-to-end on the
-            original seed achieved KL = 0.613 and Top-1 = 65.7%, which read
-            as a clean 17% fidelity win for E2E.
+            Across 3 seeds, iterative all-sparse averaged{" "}
+            <strong>KL = 0.720 +/- 0.002</strong> and Top-1 = 55.8% +/-
+            0.1%. Across 3 seeds, E2E all-sparse averaged{" "}
+            <strong>KL = 0.426 +/- 0.134</strong> and Top-1 = 73.7% +/-
+            5.7%. On the headline number, E2E mean KL is substantially
+            lower than iterative's. On reproducibility, E2E std is{" "}
+            <strong>67x larger</strong> than iterative's. The original E2E
+            seed (KL = 0.613) was the worst of three; the other two
+            (0.345, 0.320) were both better than the original.
           </p>
           <p>
-            That framing didn't survive multi-seed runs. With 2 of 3 E2E
-            seeds completed, E2E all-sparse KL ranged from 0.32 to 0.61 -
-            std around 0.15, two orders of magnitude larger than iterative's
-            0.002. On one seed E2E was substantially better than iterative;
-            on another it was substantially worse. Whatever advantage E2E
-            has at all-sparse is heavily seed-dependent. Iterative is
-            reproducible by comparison. The third E2E seed is still
-            running; numbers in this section will get tightened when it
-            lands.
+            What this means in practice: train E2E once and you might land
+            anywhere in [0.32, 0.61]. Train iterative once and you land at
+            0.720 with three-decimal-place reproducibility. E2E's mean is
+            real - it really does compress the model's output distribution
+            harder when training works - but a single E2E run is a draw
+            from a wide distribution, while a single iterative run is
+            essentially deterministic.
           </p>
           <p>
             With anchoring (leaving 6 of 12 layers as real MLPs at
             inference), iterative dropped to <strong>KL = 0.283 +/- 0.001
-            </strong> and Top-1 = 71.3%. End-to-end under the same anchoring
-            rose to KL = 2.49 and 2.75 across the two completed seeds - both
-            broken in the same way, well above the iterative-anchored point
-            and worse than several of the degenerate baselines. The
-            anchoring failure is consistent across seeds, while the
-            all-sparse advantage is not.
+            </strong> and Top-1 = 71.3%. E2E under the same anchoring
+            averaged <strong>KL = 2.591 +/- 0.115</strong> across all 3
+            seeds - all three broken in the same way (2.49, 2.53, 2.75),
+            well above the iterative-anchored point and worse than several
+            of the degenerate baselines. Unlike all-sparse, E2E's anchoring
+            failure is consistent: it's not a bad seed, it's the
+            objective.
           </p>
           <p>
             E2E's anchoring failure is a property of the training objective,
@@ -441,19 +445,18 @@ const TranscoderArticle = () => {
 
           <Figure
             number="Figure 2"
-            caption="Fidelity across all-sparse and anchored configurations. E2E numbers shown are from the original seed; multi-seed runs are still in flight. Iterative supports anchoring; E2E does not. Hover any bar for the exact value."
+            caption="Fidelity across all-sparse and anchored configurations. Both methods reported as mean across 3 seeds. Iterative supports anchoring; E2E does not. Hover any bar for the exact value."
           >
             <FidelityChart />
           </Figure>
 
           <p>
-            On the seed shown in the chart, E2E held a real 17% all-sparse
-            fidelity edge over iterative. With the second seed in, that edge
-            inverted. The all-sparse picture is unsettled until seed 3 lands
-            and the comparison is run with proper error bars on both sides.
-            The rest of this write-up looks at properties that{" "}
-            <em>are</em> stable across seeds: feature independence, per-layer
-            geometry, error propagation, and compute.
+            E2E's better mean all-sparse KL is real. So is its 67x larger
+            seed variance. The rest of this write-up looks at properties
+            that are stable across seeds and that bear on circuit-discovery
+            workflows: feature independence, per-layer geometry, error
+            propagation, anchoring, and compute. On those, the two methods
+            are not close.
           </p>
         </Section>
 
@@ -474,46 +477,40 @@ const TranscoderArticle = () => {
             This was averaged across 30 prompts at layers 2, 4, 6, 8, and 10.
           </p>
           <p>
-            I ran this test twice. The first pass selected the 50 most
-            active features per layer (method-dependent selection). The
-            second pass selected 50 random features per layer with the same
-            random seed for both methods (method-independent selection). The
-            random pass matters because E2E and iterative do not share
-            features - a most-active comparison is comparing different
-            feature sets, and a "more entangled" finding could otherwise
-            reflect a difference in <em>which</em> features happen to fire
-            most.
+            I ran this test under three feature-selection schemes. The
+            first selected the 50 most active features per layer
+            (method-dependent). The second selected 50 random features per
+            layer with the same random seed for both methods
+            (method-independent, controls for activation magnitude). The
+            third selected features at the same importance percentile
+            across methods (matched-importance, controls for whether E2E's
+            features are systematically more load-bearing).
           </p>
 
           <Figure
             number="Figure 3"
-            caption="Ablation cascade. Left: 50 most-active features per layer (1.89x ratio). Right: 50 random features matched across methods (2.78x ratio). Toggle between selection methods. Hover any bar for the exact value."
+            caption="Ablation cascade across three feature-selection schemes. All three agree iterative features are 2-3x less entangled than E2E features. Toggle between selection methods. Hover any bar for the exact value."
           >
             <CascadeChart />
           </Figure>
 
           <p>
-            Under most-active selection, iterative features produced{" "}
+            All three selection schemes agreed that E2E features were more
+            entangled. Under most-active, iterative features produced{" "}
             <strong>1.89x less downstream disruption</strong> than E2E
-            features (grand mean cascade: 205.7 vs 389.6). Under random
-            selection with the same seed for both methods, the ratio grew
-            to <strong>2.78x</strong> (grand mean: 31.1 vs 86.3). The gap
-            widens when the selection confound is removed, not the other
-            way around.
+            (grand mean: 205.7 vs 389.6). Under random with matched seed,
+            the ratio grew to <strong>2.78x</strong> (grand mean: 31.1 vs
+            86.3). Under matched-importance, the ratio was{" "}
+            <strong>2.48x</strong> (grand mean: 36.0 vs 89.1). The
+            entanglement gap survived every variant of the test I could
+            think of.
           </p>
           <p>
-            A couple of caveats. The test starts at layer 2 because layers
-            0 and 1 don't have enough downstream depth to measure cascade
-            cleanly. And higher cascade could in principle reflect feature{" "}
-            <em>importance</em> rather than entanglement - a feature that
-            participates in many circuits should cause large downstream
-            changes when ablated. Random sampling controls for activation
-            magnitude but not for importance: if E2E features are
-            systematically more load-bearing across the whole feature set
-            (a plausible consequence of coupled training), random sampling
-            wouldn't catch it. The cleaner test would be matched-importance
-            ablation - sampling features at the same importance percentile
-            across methods - and that's the next thing to run.
+            One caveat: the test starts at layer 2 because layers 0 and 1
+            don't have enough downstream depth to measure cascade cleanly.
+            Beyond that, every confound I could identify - method-dependent
+            feature popularity, mismatched activation magnitude, mismatched
+            feature importance - was tested for and the ratio held.
           </p>
         </Section>
 
@@ -677,37 +674,38 @@ const TranscoderArticle = () => {
           </p>
           <p>
             E2E produces transcoders optimized for collective output
-            fidelity. On any single seed it can reach lower all-sparse KL
-            than iterative, but its all-sparse fidelity is high-variance
-            across seeds (~0.15 std on the two seeds completed so far),
-            transcoders do not individually approximate their target MLPs,
-            features have 2.78x more co-dependence under random-sampling
-            cascade, and the transcoders can't be deployed alongside real
-            MLPs. For applications where high-variance all-sparse fidelity
-            is the only concern and features will not be studied
-            individually, E2E is still a reasonable choice.
+            fidelity. Mean all-sparse KL across 3 seeds is 0.426 - lower
+            than iterative's 0.720 - but std is 0.134, 67x larger than
+            iterative's 0.002. Its transcoders do not individually
+            approximate their target MLPs, features have 2-3x more
+            co-dependence under every cascade test I ran, and they can't
+            be deployed alongside real MLPs. For applications where
+            high-variance all-sparse fidelity is the only concern and
+            features will not be studied individually, E2E is still a
+            reasonable choice.
           </p>
           <p>
             Iterative produces transcoders optimized for per-layer MLP
             approximation. KL is reproducible across seeds (std 0.002),
             features correspond to components of the real MLP computation,
-            feature effects are more localized (2.78x less cascade under
-            random sampling), and transcoders can be mixed with real MLPs
-            for higher fidelity at selected layers. For circuit discovery -
-            where you need to trace individual features through the model
-            and may want to study a subset of layers - these tradeoffs are
-            likely worth making, at 18.5x lower cost.
+            feature effects are more localized (2-3x less cascade across
+            three feature-selection schemes), and transcoders can be mixed
+            with real MLPs for higher fidelity at selected layers. For
+            circuit discovery - where you need to trace individual features
+            through the model and may want to study a subset of layers -
+            these tradeoffs are likely worth making, at 18.5x lower cost.
           </p>
           <p>
             On the original E2E seed I tried to close the all-sparse gap by
             fine-tuning from an iterative warm start - catastrophic
             divergence (KL &gt; 5.0) - and by retraining on the all-sparse
-            deployment distribution - no improvement. With multi-seed E2E
-            now showing the all-sparse picture is largely seed-dependent,
-            "closing the gap" is the wrong frame: the cleaner question is
-            whether iterative's modularity and reproducibility are worth its
-            17% lower Top-1 on a good E2E seed. For circuit discovery, that
-            answer is straightforward.
+            deployment distribution - no improvement. With the full 3-seed
+            E2E numbers in, "closing the all-sparse gap" is somewhat the
+            wrong frame anyway: E2E mean is already lower than iterative on
+            that metric. The actual question is whether iterative's
+            modularity, reproducibility, anchorability, and feature
+            independence are worth giving up E2E's mean fidelity edge. For
+            circuit discovery, that answer is straightforward.
           </p>
         </Section>
 
@@ -751,38 +749,25 @@ const TranscoderArticle = () => {
             sweeps - the variance-explained advantage and cascade gap could
             change at different expansion factors or sparsity levels.
           </p>
-          <p>
-            <strong>E2E error bars partially in.</strong> Iterative is mean
-            +/- std across 3 seeds (std at most 0.002 KL). For E2E, two of
-            three seeds have completed; the all-sparse range so far is
-            0.32-0.61 KL (std ~0.15). The third E2E seed is still running
-            (~12 hours per seed). The fidelity-comparison numbers and the
-            chart use the original E2E seed for now and will be replaced
-            with mean +/- std once all three land. The anchoring story is
-            already stable: E2E breaks under anchoring on both completed
-            seeds (KL = 2.49 and 2.75).
-          </p>
-          <p>
-            <strong>Importance vs. entanglement.</strong> The random-feature
-            cascade test largely addresses the feature-selection confound
-            from the most-active version, but a finer analysis separating
-            disruption to related vs. unrelated downstream features would
-            still strengthen the entanglement claim.
-          </p>
         </Section>
 
         {/* Section 11 takeaway */}
         <Section num="11" title="Takeaway">
           <p>
-            Iterative alternating training trades a 17% all-sparse fidelity
-            gap for features that approximate their target MLPs, are 2.78x
-            more independent under random-feature ablation, support
-            anchoring, and cost 18.5x less to train. For circuit discovery
-            and other workflows that need to reason about individual
-            features or mix transcoders with real MLPs, those tradeoffs are
-            likely worth making. For workflows that only care about
-            all-sparse output fidelity and don't need to study features in
-            isolation, E2E remains the better choice.
+            E2E's mean all-sparse KL (0.426) is lower than iterative's
+            (0.720), but unreliable: std 0.134 vs 0.002. On any given
+            training run, E2E might beat iterative substantially or barely
+            at all. Iterative trades that mean-fidelity edge for features
+            that approximate their target MLPs, are 2-3x more independent
+            under every cascade test (most-active 1.89x, random 2.78x,
+            matched-importance 2.48x), support anchoring (KL drops to 0.283
+            vs E2E's 2.59 - all 3 seeds), reproduce across seeds, and cost
+            18.5x less to train. For circuit discovery and other workflows
+            that need to reason about individual features or mix transcoders
+            with real MLPs, those tradeoffs are likely worth making. For
+            workflows that only care about all-sparse output fidelity and
+            don't need reproducibility or feature-level analysis, E2E is
+            still a reasonable choice.
           </p>
           <p>
             All training scripts, the 12 trained transcoders, evaluation code,
