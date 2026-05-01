@@ -236,7 +236,7 @@ const IterativeDiagram = () => {
       </svg>
 
       {/* Legend strip below the SVG (clickable categories) */}
-      <div className="mt-3 flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
+      <div className="mt-5 pt-4 border-t-[1px] border-[var(--color-border)] flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-mono uppercase tracking-[0.1em] text-[var(--color-text-muted)]">
         {([
           { c: "attn", l: "Frozen attn" },
           { c: "real", l: "Real MLP" },

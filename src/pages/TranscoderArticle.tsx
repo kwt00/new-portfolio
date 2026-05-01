@@ -373,6 +373,18 @@ const TranscoderArticle = () => {
             plus gradients at once.
           </p>
           <p>
+            Why this works comes down to what each transcoder is being
+            optimized for. Iterative makes every transcoder an independent
+            sparse bottleneck whose only job is to approximate one specific
+            MLP layer's input-output map. There is no external pressure to
+            coordinate with neighbors, no inter-layer error budget to draw
+            from, no compensation to learn. Each transcoder has to actually
+            solve its own per-layer compression problem on its own. That
+            single-objective bottleneck is what makes the resulting features
+            correspond to MLP computations: there's no other valid solution
+            to per-layer MSE except actually approximating the MLP.
+          </p>
+          <p>
             The transcoders you get from this process are each independently
             trained to match a real MLP. They have never seen each other's
             errors. When you swap any of them for the real MLP at inference
@@ -382,9 +394,10 @@ const TranscoderArticle = () => {
             KL from 0.720 +/- 0.002 to 0.283 +/- 0.001 (mean +/- std across 3
             seeds). E2E transcoders do not support this workflow because they
             were optimized as a coupled system, not for per-layer MLP
-            approximation. This is a difference in capability, not a claim that
-            E2E is broken - the two methods optimize different objectives and
-            produce transcoders with different properties.
+            approximation. <strong>This is a difference in capability, not a
+            claim that E2E is broken - the two methods optimize different
+            objectives and produce transcoders with different properties.
+            </strong>
           </p>
         </Section>
 
@@ -411,16 +424,6 @@ const TranscoderArticle = () => {
             full distribution.
           </p>
           <p>
-            Worth being explicit about something: every previous version of
-            this comparison used the original E2E seed (KL = 0.613), which
-            turned out to be the worst of three. The "E2E wins fidelity by
-            17%" headline that ran for two earlier drafts of this write-up
-            was a comparison against a worst-tail E2E run. The honest
-            update from the multi-seed data is that E2E's mean fidelity is
-            <em> better </em>than iterative's, not worse - and it took
-            running additional seeds to surface that.
-          </p>
-          <p>
             With anchoring (leaving 6 of 12 layers as real MLPs at
             inference), iterative dropped to <strong>KL = 0.283 +/- 0.001
             </strong> and Top-1 = 71.3%. E2E under the same anchoring
@@ -429,11 +432,10 @@ const TranscoderArticle = () => {
             well above the iterative-anchored point and worse than several
             of the degenerate baselines. The all-sparse comparison is
             seed-dependent; the anchoring comparison is not. Anchoring
-            failure being consistent across seeds is exactly what you would
+            failure being consistent across seeds is what you would
             expect from "E2E learns to compensate as a coupled system":
-            the structural prediction is that breaking the coupling
-            propagates regardless of which seed produced it. The data
-            agrees.
+            breaking the coupling propagates regardless of which seed
+            produced it.
           </p>
           <p>
             E2E's anchoring failure is a property of the training objective,
@@ -747,24 +749,21 @@ const TranscoderArticle = () => {
             depend on properties that could shift at different expansion
             factors or sparsity levels - the variance-explained advantage
             and the 2-3x entanglement gap have not been re-measured at
-            other settings. This is the most consequential thing this
-            write-up doesn't establish.
+            other settings.
           </p>
           <p>
             <strong>No downstream eval.</strong> Cascade, variance
             explained, and KL are proxies for interpretability, not
-            interpretability itself. A direct evaluation - comparing the
-            quality of circuits discovered using iterative vs E2E
-            transcoders, or measuring feature monosemanticity via
-            automated labeling - would strengthen the interpretability
-            claim, and is the natural follow-up paper.
+            interpretability itself. The interpretability claim rests on
+            those proxies; circuit-level analysis or automated
+            monosemanticity labeling would test it directly, and neither
+            is done here.
           </p>
           <p>
             <strong>One model.</strong> All experiments are on GPT-2 small
             (124M parameters, 12 layers). The compute advantage should
             widen with model size - cost scales with one layer, not the
-            whole model - but I have not demonstrated this. Scaling to
-            Llama-scale models is the obvious next step.
+            whole model - but I have not demonstrated this.
           </p>
           <p>
             <strong>One corpus.</strong> Training is on OpenWebText.
