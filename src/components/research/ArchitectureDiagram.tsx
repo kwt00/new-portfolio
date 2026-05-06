@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * ArchitectureDiagram — clean top-to-bottom schematic of one routed
+ * ArchitectureDiagram - clean top-to-bottom schematic of one routed
  * transformer block. Two parallel columns (router path on the left,
  * attention path on the right) merge into the directional-suppression
  * box, then the standard W_out + MLP path closes out.
@@ -110,7 +110,7 @@ const ArchitectureDiagram = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Layout constants — top-to-bottom, two parallel columns merge into suppression
+  // Layout constants - top-to-bottom, two parallel columns merge into suppression
   const W = 720;
   const H = 620;
 
@@ -159,7 +159,7 @@ const ArchitectureDiagram = () => {
         <Arrow x1={cxRight} y1={y1 + bh} x2={cxRight} y2={y2} />
         <Box x={cxRight - bw / 2} y={y2} w={bw} h={bh} label="HEAD OUTPUTS" sublabel="o_h ∈ R^128, ×12 heads" />
         <Arrow x1={cxRight} y1={y2 + bh} x2={cxRight} y2={y3} />
-        {/* invisible spacer to keep symmetry — instead just continue to suppression */}
+        {/* invisible spacer to keep symmetry - instead just continue to suppression */}
 
         {/* Merge into directional suppression */}
         <Arrow x1={cxLeft} y1={y3 + bh} x2={cxMid - bwWide / 2 + 60} y2={y4} dashed color="var(--color-violet)" />

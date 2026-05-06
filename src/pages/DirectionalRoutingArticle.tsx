@@ -143,11 +143,11 @@ const DirectionalRoutingArticle = () => {
         <p className="text-[1.25rem] sm:text-[1.375rem] leading-[1.55] text-[var(--color-text-muted)] mb-6" style={{ fontFamily: "var(--font-serif)" }}>
           You can't unentangle superposition after the fact. But you can train a
           model to expose its own organization while it's learning. This is what
-          came out of trying — a 433M-parameter decoder-only transformer with a
+          came out of trying - a 433M-parameter decoder-only transformer with a
           small per-layer router that decides, based on the input, which
           directions in each attention head's output to suppress. What I wanted
           was a tool to study how circuits develop when superposition pressure
-          is partially relaxed. What I got is exactly that — and a few things
+          is partially relaxed. What I got is exactly that - and a few things
           that surprised me.
         </p>
         <p className="text-[1.075rem] sm:text-[1.125rem] leading-[1.6] text-[var(--color-text-muted)] mb-10" style={{ fontFamily: "var(--font-serif)" }}>
@@ -193,7 +193,7 @@ const DirectionalRoutingArticle = () => {
             similar superpositions they could.
           </p>
           <p>
-            That was clever. It was also obviously efficient — superposition
+            That was clever. It was also obviously efficient - superposition
             lets models hold way more knowledge than they have neurons for. But
             despite how clever the superposition got, it was still interfering
             with training that had already acted on the model. When the model
@@ -224,7 +224,7 @@ const DirectionalRoutingArticle = () => {
             looked at each input and decided which neurons in the FFN were
             useful for that token, that task. The rest got masked. What I was
             supposed to end up with was an input-dependent specialist extracted
-            from the dense model — a kind of cheap dynamic distillation.
+            from the dense model - a kind of cheap dynamic distillation.
           </p>
           <p>
             It failed because superposition was naturally messy. The model had
@@ -281,7 +281,7 @@ const DirectionalRoutingArticle = () => {
             about 400M parameters. RoPE positional encoding, SwiGLU MLP,
             RMSNorm, weight-tied embeddings. Pretty standard, as far as
             architectures go. The routing mechanism added 16M parameters on
-            top of that — a ~3.9% overhead.
+            top of that - a ~3.9% overhead.
           </p>
           <p>
             Each attention head learned 4 unit-norm direction vectors in head
@@ -291,7 +291,7 @@ const DirectionalRoutingArticle = () => {
             to the model.
           </p>
           <p>
-            On top of every layer I put a router — a small 4-layer MLP that
+            On top of every layer I put a router - a small 4-layer MLP that
             took a single input vector and produced 48 routing weights (one
             for each head × direction at this layer). The router input was the
             residual stream at this layer, mean-pooled across the sequence
@@ -328,7 +328,7 @@ const DirectionalRoutingArticle = () => {
           </Figure>
 
           <p>
-            Standard attention ran first — Q, K, V projections, scaled
+            Standard attention ran first - Q, K, V projections, scaled
             dot-product, the usual. I got head outputs. Then the router's
             weights told the model how much of each direction to subtract
             from each head. After suppression, output projection ran and the
@@ -385,7 +385,7 @@ const DirectionalRoutingArticle = () => {
           <p>
             I took 24 held-out prompts split across math, code, prose, and
             factual content. I ran them through the trained model and recorded
-            the routing weights at every layer × head × direction — that gave
+            the routing weights at every layer × head × direction - that gave
             me a 576-dimensional vector per input, summarizing the model's
             per-input suppression decision. Then I ran nearest-centroid
             classification on those vectors with no training.{" "}
@@ -433,7 +433,7 @@ const DirectionalRoutingArticle = () => {
               <code className="font-mono text-[0.92em]">
                 "and, And, Thus, However, In, AND, however"
               </code>{" "}
-              — clearly an inter-clause-glue suppressor. When this direction
+              - clearly an inter-clause-glue suppressor. When this direction
               gets weighted high, the model de-emphasizes connective words.
             </li>
             <li>
@@ -441,7 +441,7 @@ const DirectionalRoutingArticle = () => {
               <code className="font-mono text-[0.92em]">
                 ".\n, ."), )."
               </code>{" "}
-              — a sentence terminator suppressor. Active near sentence
+              - a sentence terminator suppressor. Active near sentence
               boundaries.
             </li>
             <li>
@@ -449,11 +449,11 @@ const DirectionalRoutingArticle = () => {
               <code className="font-mono text-[0.92em]">
                 "Although, While, internal, Obviously, The, Actually"
               </code>{" "}
-              — mid-layer logical-connective suppressor. Mostly relevant for
+              - mid-layer logical-connective suppressor. Mostly relevant for
               transitional, contrastive constructions.
             </li>
             <li>
-              <strong>L0 H4 K0:</strong> code-specific patterns — gets
+              <strong>L0 H4 K0:</strong> code-specific patterns - gets
               weighted high (0.63) on code prompts and low (0.44) on prose
               prompts.
             </li>
@@ -492,14 +492,14 @@ const DirectionalRoutingArticle = () => {
           <p>
             Late layers (L7-L9) became fixed syntactic pruners. Routing
             weights here were nearly constant across inputs. Layer 9 had zero
-            specialist heads and routing variance 0.00055 — 127× lower than
+            specialist heads and routing variance 0.00055 - 127× lower than
             layer 0. The directions at these layers, when projected through
             the unembedding, pointed at punctuation, articles, conjunctions,
             function words. Layer 9 also never fully suppressed anything; the
             max routing weight stayed below 0.9.
           </p>
           <p>
-            Finally, layer 9 — the least dynamic layer in the model — turned
+            Finally, layer 9 - the least dynamic layer in the model - turned
             out to be the most critical. Taking out only Layer 9's routing
             increased full-corpus perplexity by 42.6. No other single-layer
             ablation came anywhere close. The least adaptive, most "boring"
@@ -530,7 +530,7 @@ const DirectionalRoutingArticle = () => {
             almost orthogonal to every other layer's directions. Off-diagonal
             mean cosine similarity was μ = -0.0001. There was no
             orthogonality penalty in the loss. The model just decided, on its
-            own, to carve out independent feature channels at every depth —
+            own, to carve out independent feature channels at every depth -
             which is mathematically symmetric and kind of a beautiful
             structure.
           </p>
@@ -548,13 +548,13 @@ const DirectionalRoutingArticle = () => {
           <p>
             One of the most interesting interpretability findings in this
             project came from just turning off the routing during inference.
-            This doesn't require retraining — just a nullification of the
+            This doesn't require retraining - just a nullification of the
             routing weights at runtime.
           </p>
           <p>
             Perplexity went from 15 to roughly 7.7 million. The model was
             functionally destroyed. Even further, fully static weights like
-            0.5 damaged performance too (PPL 5,284 — not as bad, but still
+            0.5 damaged performance too (PPL 5,284 - not as bad, but still
             bad). Dynamic routing alone held the model together.
           </p>
           <p>
@@ -570,15 +570,15 @@ const DirectionalRoutingArticle = () => {
 
           <Figure
             number="Figure 7"
-            caption="Logit attribution to ' Paris' for the canonical 'The capital of France is →' prompt. Heads contribute -4.94 logits — they actively oppose the correct answer. Routing contributes +25.57 — it overrides the heads to produce the right answer."
+            caption="Logit attribution to ' Paris' for the canonical 'The capital of France is →' prompt. Heads contribute -4.94 logits - they actively oppose the correct answer. Routing contributes +25.57 - it overrides the heads to produce the right answer."
           >
             <LogitDecomposition />
           </Figure>
 
           <p>
             The heads don't carry the circuit. The routing does. If you knock
-            out the head with the strongest direct attention to "France" — the
-            one standard interp methods would call the "mover head" —
+            out the head with the strongest direct attention to "France" - the
+            one standard interp methods would call the "mover head" -
             performance drops by 1.07× normal. The heads are interchangeable.
             The routing is what's load-bearing.
           </p>
@@ -620,7 +620,7 @@ const DirectionalRoutingArticle = () => {
           </p>
           <p>
             What I wanted from this project, going in, was a way to study
-            superposition — just see what circuits look like when you reduce
+            superposition - just see what circuits look like when you reduce
             the pressure on the model to compress everything into the same
             neurons. The router lets features fire at different scales for
             different inputs, which is a form of relaxed superposition. The

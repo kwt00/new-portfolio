@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * LayerImportance — vertical bar chart of per-layer routing knockout impact.
+ * LayerImportance - vertical bar chart of per-layer routing knockout impact.
  * Shows the L9 paradox: knocking out only Layer 9's routing gives the
  * largest perplexity increase (+42.6), even though L9 has the lowest
  * routing variance.

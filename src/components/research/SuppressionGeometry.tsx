@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * SuppressionGeometry — 2D simplified visualization of the suppression
+ * SuppressionGeometry - 2D simplified visualization of the suppression
  * operation. Shows a head's output vector being projected onto a learned
  * direction and that projected component being subtracted (scaled by
  * routing weight).

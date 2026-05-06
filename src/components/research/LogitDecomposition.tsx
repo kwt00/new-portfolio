@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * LogitDecomposition — diverging horizontal bar chart for the
+ * LogitDecomposition - diverging horizontal bar chart for the
  * canonical "The capital of France is → Paris" decomposition.
  *
  * 4 components: embedding, attention heads (raw), routing delta, MLPs.
@@ -63,7 +63,7 @@ const LogitDecomposition = () => {
           "The capital of France is →"
         </div>
 
-        {/* Chart: 3-column grid — [label | bar | value] */}
+        {/* Chart: 3-column grid - [label | bar | value] */}
         <div className="grid gap-x-3 gap-y-2.5" style={{ gridTemplateColumns: "minmax(95px, max-content) 1fr minmax(70px, max-content)" }}>
           {COMPONENTS.map((c) => {
             const isPositive = c.value > 0;
@@ -126,7 +126,7 @@ const LogitDecomposition = () => {
         </div>
 
         <div className="mt-4 font-serif italic text-[12px] leading-[1.6] text-[var(--color-text-muted)]">
-          Heads contribute −4.94 logits — they actively oppose the correct
+          Heads contribute −4.94 logits - they actively oppose the correct
           answer. Routing contributes +25.57. Without routing, the model can't
           make this prediction at all.
         </div>
