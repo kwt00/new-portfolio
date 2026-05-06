@@ -150,25 +150,12 @@ const DirectionalRoutingArticle = () => {
           is partially relaxed. What I got is exactly that - and a few things
           that surprised me.
         </p>
-        <p className="text-[1.075rem] sm:text-[1.125rem] leading-[1.6] text-[var(--color-text-muted)] mb-10" style={{ fontFamily: "var(--font-serif)" }}>
-          Pre-print on{" "}
-          <a href="https://arxiv.org/abs/2603.14923" target="_blank" rel="noopener noreferrer" className="text-[var(--color-pink)] underline decoration-[var(--color-pink)] decoration-[1.5px] underline-offset-[3px] hover:decoration-[2.5px] transition-all duration-150 font-semibold" data-cursor-hover>
-            arXiv
-          </a>
-          . Checkpoints on HuggingFace at{" "}
-          <code className="font-mono text-[0.95em] text-[var(--color-text)]">kevint00/moe-checkpoints</code>.
-        </p>
-
-        <div className="flex flex-wrap gap-x-4 gap-y-2 items-center font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-text-muted)] pb-6 border-b-[1.5px] border-[var(--color-border)]">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 items-center font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-text-muted)] pt-2 pb-6 border-b-[1.5px] border-[var(--color-border)]">
           <span className="text-[var(--color-text)]">Kevin Taylor</span>
           <span className="text-[var(--color-border)]">/</span>
           <span>March 2026</span>
           <span className="text-[var(--color-border)]">/</span>
           <span>400M Decoder-only</span>
-          <span className="text-[var(--color-border)]">/</span>
-          <a href="https://arxiv.org/abs/2603.14923" target="_blank" rel="noopener noreferrer" className="text-[var(--color-text)] hover:text-[var(--color-pink)] transition-colors duration-200 underline decoration-[var(--color-border)] underline-offset-4 hover:decoration-[var(--color-pink)]" data-cursor-hover>
-            Paper {"->"}
-          </a>
         </div>
       </div>
 
